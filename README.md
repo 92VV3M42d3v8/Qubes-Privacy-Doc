@@ -80,7 +80,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
     
     Hooray our own private Searx instance running.
     
- 10. Step 9 and 10 are required always to run on restarts.   
+ 10. Step 8 and 9 are required always to run on restarts.   
 
 
      
