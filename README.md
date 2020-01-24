@@ -44,6 +44,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
    Once we're logged in, we can configure and activate the Searx virtual environment. This allows Searx to run within its own   environment so we can ensure that it runs properly without restrictions. Enter the following commands to activate the environment:
 
    virtualenv searx-ve
+   
    . ./searx-ve/bin/activate
 
    When the virtual environment finishes installing, we're going to use the included shell script to update Searx. This can be done by running the command below:
