@@ -77,11 +77,11 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
    
    python searx/webapp.py
    
- 9. Now again open browser and reach http://127.0.0.1:8888
+9. Now again open browser and reach http://127.0.0.1:8888
     
     Hooray our own private Searx instance running.
     
- 10. Step 8 and 9 are required always to run on restarts.   
+10. Step 8 and 9 are required always to run on restarts.   
 
-
+If you run VPN you can set VPN VM as NetVM of this standalone VM.
      
