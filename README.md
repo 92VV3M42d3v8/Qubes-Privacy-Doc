@@ -69,7 +69,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
    
 7. Now shut down this standalone VM.
 
-8. Now again start the Standalone VM terminal and run following commands in order
+8. Now again start the Standalone VM terminal and run following commands in order (you have to reach usr/local/searx directory)
    
    cd /usr/local/searx
    
