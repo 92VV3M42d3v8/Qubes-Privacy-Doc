@@ -1,3 +1,7 @@
+How to run a private Searx instance in Qubes-OS
+
+This tutorial is a initial Documentation to run a Private Searx instance in Qubes-OS.
+( This is work in progress, which performed well in my testings.)
 
 1. First of all create a Standalone VM based on Debian-10 and networking through Default(Sys-Firewall). Do not provide Network.
 
