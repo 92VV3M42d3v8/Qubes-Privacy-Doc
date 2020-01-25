@@ -3,19 +3,19 @@ How to run a private Searx instance in Qubes-OS
 This tutorial is a initial Documentation to run a Private Searx instance in Qubes-OS.
 ( This is work in progress, which performed well in my testings.)
 
-1. First of all create a Standalone VM based on Debian-10 and networking through Default(Sys-Firewall). Do not provide Network.
+1. Run Terminal in Template Debian-10 and install dependacies here.
 
-2. Run Terminal in Newly Created Standalone VM.
-
-3. Installing Dependancies-
+2. Installing Dependancies-
 
      Run following command in terminal-
      
      sudo apt-get install git build-essential libxslt-dev python-dev python-virtualenv python-babel zlib1g-dev libffi-dev libssl-dev
      
+3. Create a Qubes AppVM based on Debian-10 and networking through Default(Sys-Firewall). Do not provide Network.
+
 4. Setup installation directory
 
-    After installing the dependencies above, we can move to the directory that we'll install Searx in:
+    Now open termianl in newly created VM, we can move to the directory that we'll install Searx in:
 
     cd /usr/local/
 
@@ -57,9 +57,9 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
    python searx/webapp.py
 
-   Searx will continue to run until the terminal window is closed. You'll probably want to get around this and allow it to run indefinitly. This can be done by running the application in the background.
+   Searx will continue to run until the terminal window is closed. (You'll probably want to get around this and allow it to run indefinitly. This can be done by running the application in the background.
 
-   Press CTRL + C to stop the current instance from running and then enter the command below:
+   Press CTRL + C to stop the current instance from running and then enter the command below:)(untested)
 
    nohup python searx/webapp.py &
 
