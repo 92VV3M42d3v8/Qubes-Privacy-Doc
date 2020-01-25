@@ -90,7 +90,7 @@ su - -c 'notify-send "$(hostname): LINK IS DOWN !" --icon=dialog-error' user
 esac
 
 
-The above Script should be copied from Raw
+The above Script should be copied from Blame.
 
 Add these two lines just beneath first line
 
@@ -145,7 +145,7 @@ sleep 2s
 iptables -I OUTPUT -p all -o eth0 -m owner --gid-owner qvpn -j ACCEPT
 
 
-Again this should be copied from raw. Save and exit.
+Again Above script should be copied from Blame. Save and exit.
 
 In Terminal
 
@@ -163,7 +163,7 @@ su - -c 'notify-send "$(hostname): Starting $VPN_CLIENT..." --icon=network-idle'
 groupadd -rf qvpn ; sleep 2s
 sg qvpn -c "$VPN_CLIENT $VPN_OPTIONS"
 
-Again this from raw. Save and Exit.
+Again this script from Blame. Save and Exit.
 
 In terminal
 
