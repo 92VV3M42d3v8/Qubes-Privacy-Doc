@@ -51,7 +51,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
    ./manage.sh update_packages
 
-   Launch Searx
+6. Launch Searx
 
    Now we can launch the main Searx program with Python:
 
@@ -63,13 +63,13 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
    nohup python searx/webapp.py &
 
-6. Now run a browser in same VM and open  http://127.0.0.1:8888
+7. Now run a browser in same VM and open  http://127.0.0.1:8888
    
    Hurrey, You have your own Searx instance running.
    
-7. Now shut down this standalone VM.
+8. Now shut down this App VM.
 
-8. Now again start the Standalone VM terminal and run following commands in order (you have to reach usr/local/searx directory)
+9. Now again start the App VM terminal and run following commands in order (you have to reach usr/local/searx directory)
    
    cd /usr/local/searx
    
@@ -77,11 +77,11 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
    
    python searx/webapp.py
    
-9. Now again open browser and reach http://127.0.0.1:8888
+10. Now again open browser and reach http://127.0.0.1:8888
     
     Hooray our own private Searx instance running.
     
-10. Step 8 and 9 are required always to run on restarts.   
+11. Step 9 and 10 are required always to run on restarts.   
 
-If you run VPN you can set VPN VM as NetVM of this standalone VM.
+If you run VPN you can set VPN VM as NetVM of this App VM.
      
