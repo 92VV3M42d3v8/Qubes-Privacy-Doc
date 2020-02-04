@@ -70,7 +70,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
 9. Now again start the App VM terminal and run following command
 
-   cd /rw/config/rc.local
+   sudo gedit /rw/config/rc.local
    
    Delete everything and Paste following-
    
