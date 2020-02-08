@@ -9,7 +9,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
      Run following command in terminal-
      
-     sudo apt-get install git build-essential libxslt-dev python-dev python-virtualenv python-babel zlib1g-dev libffi-dev libssl-dev
+       sudo apt-get install git build-essential libxslt-dev python-dev python-virtualenv python-babel zlib1g-dev libffi-dev libssl-dev
      
 3. Create a Qubes AppVM based on Debian-10 and networking through Default(Sys-Firewall). Do not provide Network.
 
@@ -17,17 +17,17 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
     Now open termianl in newly created VM, we can move to the directory that we'll install Searx in:
 
-    cd /usr/local/
+       cd /usr/local/
 
     Next, we'll use git to download a copy of the Searx source code here:
 
-    sudo git clone https://github.com/asciimoo/searx.git
+       sudo git clone https://github.com/asciimoo/searx.git
 
     Now we're going to create a new user for Searx to use and assign it directory privileges:
 
-    sudo useradd searx -d /usr/local/searx
+       sudo useradd searx -d /usr/local/searx
     
-    sudo chown searx:searx -R /usr/local/searx
+       sudo chown searx:searx -R /usr/local/searx
 
 5. Build Searx
 
@@ -35,50 +35,47 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
    First, lets move to the directory we created when downloading the source code:
 
-   cd searx/
+       cd searx/
 
    Next, we'll switch to our newly created user:
 
-   sudo -u searx -i
+       sudo -u searx -i
 
    Once we're logged in, we can configure and activate the Searx virtual environment. This allows Searx to run within its own   environment so we can ensure that it runs properly without restrictions. Enter the following commands to activate the environment:
 
-   virtualenv searx-ve
+       virtualenv -p python3 venv3
    
-   . ./searx-ve/bin/activate
+       . ./venv3/bin/activate
 
-   When the virtual environment finishes installing, we're going to use the included shell script to update Searx. This can be done by running the command below:
-
-   ./manage.sh update_packages
+       pip3 install -r requirements.txt
 
 6. Launch Searx
 
    Now we can launch the main Searx program with Python:
 
-   python searx/webapp.py
+       python3 searx/webapp.py
 
    Searx will continue to run until the terminal window is closed. (You'll probably want to get around this and allow it to run indefinitly. This can be done by running the application in the background.
 
    Press CTRL + C to stop the current instance from running and then enter the command below:)(untested)
 
-   nohup python searx/webapp.py &
+       nohup python searx/webapp.py &
 
 7. Now run a browser in same VM and open  http://127.0.0.1:8888
-   
    
 8. Now shut down this App VM.
 
 9. Now again start the App VM terminal and run following command
 
-   sudo gedit /rw/config/rc.local
+       sudo gedit /rw/config/rc.local
    
    Delete everything and Paste following-
    
-   cd /usr/local/searx
+       cd /usr/local/searx
    
-   . ./searx-ve/bin/activate
+       . ./venv3/bin/activate
    
-   python searx/webapp.py
+       python3 searx/webapp.py
    
 10. Now again open browser and reach http://127.0.0.1:8888
     
