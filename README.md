@@ -63,24 +63,24 @@ Add following text-
     # To override DHCP DNS, assign DNS addresses to 'vpn_dns' env variable before calling this script;
     # Format is 'X.X.X.X  Y.Y.Y.Y [...]'
     if [[ -z "$vpn_dns" ]] ; then
-    # Parses DHCP foreign_option_* vars to automatically set DNS address translation:
-    for optionname in ${!foreign_option_*} ; do
-        option="${!optionname}"
-        unset fops; fops=($option)
-        if [ ${fops[1]} == "DNS" ] ; then vpn_dns="$vpn_dns ${fops[2]}" ; fi
-    done
+        # Parses DHCP foreign_option_* vars to automatically set DNS address translation:
+        for optionname in ${!foreign_option_*} ; do
+            option="${!optionname}"
+            unset fops; fops=($option)
+            if [ ${fops[1]} == "DNS" ] ; then vpn_dns="$vpn_dns ${fops[2]}" ; fi
+        done
     fi
   
     iptables -t nat -F PR-QBS
     if [[ -n "$vpn_dns" ]] ; then
-    # Set DNS address translation in firewall:
-    for addr in $vpn_dns; do
-        iptables -t nat -A PR-QBS -i vif+ -p udp --dport 53 -j DNAT --to $addr
-        iptables -t nat -A PR-QBS -i vif+ -p tcp --dport 53 -j DNAT --to $addr
-    done
-    su - -c 'notify-send "$(hostname): LINK IS UP." --icon=network-idle' user
+        # Set DNS address translation in firewall:
+        for addr in $vpn_dns; do
+            iptables -t nat -A PR-QBS -i vif+ -p udp --dport 53 -j DNAT --to $addr
+            iptables -t nat -A PR-QBS -i vif+ -p tcp --dport 53 -j DNAT --to $addr
+        done
+        su - -c 'notify-send "$(hostname): LINK IS UP." --icon=network-idle' user
     else
-    su - -c 'notify-send "$(hostname): LINK UP, NO DNS!" --icon=dialog-error' user
+        su - -c 'notify-send "$(hostname): LINK UP, NO DNS!" --icon=dialog-error' user
     fi
   
     ;;
@@ -98,13 +98,13 @@ Add these two lines just beneath first line
 
 Replace X.X.X.X with following addresses written in front of VPN name in these two lines-
 
-NordVPN - 103.86.99.99 or 103.86.96.96
+    NordVPN - 103.86.99.99 or 103.86.96.96
 
-IVPN - 10.0.254.2 or 10.0.254.3
+    IVPN - 10.0.254.2 or 10.0.254.3
 
-Perfect-Privacy - DNS address of VPN configuration file written after Remote
+    Perfect-Privacy - DNS address of VPN configuration file written after Remote
 
-Mullvad - 10.8.0.1 or 10.14.0.1
+    Mullvad - 10.8.0.1 or 10.14.0.1
 
 Similarly you can ask your provider about these.
 
@@ -133,8 +133,8 @@ Delete everything and Add following-
    
     #    Add the `qvpn` group to system, if it doesn't already exist
     if ! grep -q "^qvpn:" /etc/group ; then
-     groupadd -rf qvpn
-     sync
+         groupadd -rf qvpn
+         sync
     fi
     sleep 2s
    
