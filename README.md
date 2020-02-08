@@ -9,27 +9,27 @@ Now open a Browser in Disposable VM. Login to your VPN website and Download open
 
 Now open a terminal in App VM and run following command
 
-sudo mkdir /rw/config/vpn
+    sudo mkdir /rw/config/vpn
 
 Now run-
 
-sudo gedit /rw/config/vpn/openvpn-client.ovpn
+    sudo gedit /rw/config/vpn/openvpn-client.ovpn
 
 Now open one of the configuration files in Text editor and copy its content into Newly opened openvpn-client.ovpn
 
 Search for auth-user-pass in theses lines and change it into
 
-auth-user-pass pass.txt
+    auth-user-pass pass.txt
 
 Search for redirect-gateway def1 also and if not present write it there as it is in a new line.
 
 Also add these three lines 
 
-script-security 2
+    script-security 2
 
-up 'qubes-vpn-handler.sh up'
+    up 'qubes-vpn-handler.sh up'
 
-down 'qubes-vpn-handler.sh down'
+    down 'qubes-vpn-handler.sh down'
 
 If there are already existing lines starting with up and down, Remove them.
 
@@ -37,66 +37,64 @@ Save this file and Exit.
 
 Now again in App VM terminal run following command-
 
-sudo gedit /rw/config/vpn/pass.txt
+    sudo gedit /rw/config/vpn/pass.txt
 
 Type in text editor-
 
-username
+    username
 
-password
+    password
 
 Save and Exit.
 
 Now again in App VM terminal
 
-sudo gedit /rw/config/vpn/qubes-vpn-handler.sh
+    sudo gedit /rw/config/vpn/qubes-vpn-handler.sh
 
 Add following text-
 
-#!/bin/bash
-set -e
-export PATH="$PATH:/usr/sbin:/sbin"
+    #!/bin/bash
+    set -e
+    export PATH="$PATH:/usr/sbin:/sbin"
   
-case "$1" in
+    case "$1" in
   
-up)
-# To override DHCP DNS, assign DNS addresses to 'vpn_dns' env variable before calling this script;
-# Format is 'X.X.X.X  Y.Y.Y.Y [...]'
-if [[ -z "$vpn_dns" ]] ; then
+    up)
+    # To override DHCP DNS, assign DNS addresses to 'vpn_dns' env variable before calling this script;
+    # Format is 'X.X.X.X  Y.Y.Y.Y [...]'
+    if [[ -z "$vpn_dns" ]] ; then
     # Parses DHCP foreign_option_* vars to automatically set DNS address translation:
     for optionname in ${!foreign_option_*} ; do
         option="${!optionname}"
         unset fops; fops=($option)
         if [ ${fops[1]} == "DNS" ] ; then vpn_dns="$vpn_dns ${fops[2]}" ; fi
     done
-fi
+    fi
   
-iptables -t nat -F PR-QBS
-if [[ -n "$vpn_dns" ]] ; then
+    iptables -t nat -F PR-QBS
+    if [[ -n "$vpn_dns" ]] ; then
     # Set DNS address translation in firewall:
     for addr in $vpn_dns; do
         iptables -t nat -A PR-QBS -i vif+ -p udp --dport 53 -j DNAT --to $addr
         iptables -t nat -A PR-QBS -i vif+ -p tcp --dport 53 -j DNAT --to $addr
     done
     su - -c 'notify-send "$(hostname): LINK IS UP." --icon=network-idle' user
-else
+    else
     su - -c 'notify-send "$(hostname): LINK UP, NO DNS!" --icon=dialog-error' user
-fi
+    fi
   
-;;
-down)
-su - -c 'notify-send "$(hostname): LINK IS DOWN !" --icon=dialog-error' user
-;;
-esac
+    ;;
+    down)
+    su - -c 'notify-send "$(hostname): LINK IS DOWN !" --icon=dialog-error' user
+    ;;
+    esac
 
-
-The above Script should be copied from Blame.
 
 Add these two lines just beneath first line
 
-vpn_dns="X.X.X.X"
+    vpn_dns="X.X.X.X"
 
-addr="X.X.X.X"
+    addr="X.X.X.X"
 
 Replace X.X.X.X with following addresses written in front of VPN name in these two lines-
 
@@ -114,60 +112,60 @@ Save and Exit.
 
 Now again in terminal run
 
-sudo chmod +x /rw/config/vpn/qubes-vpn-handler.sh
+    sudo chmod +x /rw/config/vpn/qubes-vpn-handler.sh
 
-sudo gedit /rw/config/qubes-firewall-user-script
+    sudo gedit /rw/config/qubes-firewall-user-script
 
 Delete everything and Add following-
 
-#!/bin/bash
-#    Block forwarding of connections through upstream network device
-#    (in case the vpn tunnel breaks):
-iptables -I FORWARD -o eth0 -j DROP
-iptables -I FORWARD -i eth0 -j DROP
-ip6tables -I FORWARD -o eth0 -j DROP
-ip6tables -I FORWARD -i eth0 -j DROP
+    #!/bin/bash
+    #    Block forwarding of connections through upstream network device
+    #    (in case the vpn tunnel breaks):
+    iptables -I FORWARD -o eth0 -j DROP
+    iptables -I FORWARD -i eth0 -j DROP
+    ip6tables -I FORWARD -o eth0 -j DROP
+    ip6tables -I FORWARD -i eth0 -j DROP
    
-#    Block all outgoing traffic
-iptables -P OUTPUT DROP
-iptables -F OUTPUT
-iptables -I OUTPUT -o lo -j ACCEPT
+    #    Block all outgoing traffic
+    iptables -P OUTPUT DROP
+    iptables -F OUTPUT
+    iptables -I OUTPUT -o lo -j ACCEPT
    
-#    Add the `qvpn` group to system, if it doesn't already exist
-if ! grep -q "^qvpn:" /etc/group ; then
+    #    Add the `qvpn` group to system, if it doesn't already exist
+    if ! grep -q "^qvpn:" /etc/group ; then
      groupadd -rf qvpn
      sync
-fi
-sleep 2s
+    fi
+    sleep 2s
    
-#    Allow traffic from the `qvpn` group to the uplink interface (eth0);
-#    Our VPN client will run with group `qvpn`.
-iptables -I OUTPUT -p all -o eth0 -m owner --gid-owner qvpn -j ACCEPT
+    #    Allow traffic from the `qvpn` group to the uplink interface (eth0);
+    #    Our VPN client will run with group `qvpn`.
+    iptables -I OUTPUT -p all -o eth0 -m owner --gid-owner qvpn -j ACCEPT
 
 
-Again Above script should be copied from Blame. Save and exit.
+Save and exit.
 
 In Terminal
 
-sudo chmod +x /rw/config/qubes-firewall-user-script
+    sudo chmod +x /rw/config/qubes-firewall-user-script
 
-sudo gedit /rw/config/rc.local
+    sudo gedit /rw/config/rc.local
 
 Delete everything and add
 
-#!/bin/bash
-VPN_CLIENT='openvpn'
-VPN_OPTIONS='--cd /rw/config/vpn/ --config openvpn-client.ovpn --daemon'
+    #!/bin/bash
+    VPN_CLIENT='openvpn'
+    VPN_OPTIONS='--cd /rw/config/vpn/ --config openvpn-client.ovpn --daemon'
    
-su - -c 'notify-send "$(hostname): Starting $VPN_CLIENT..." --icon=network-idle' user
-groupadd -rf qvpn ; sleep 2s
-sg qvpn -c "$VPN_CLIENT $VPN_OPTIONS"
+    su - -c 'notify-send "$(hostname): Starting $VPN_CLIENT..." --icon=network-idle' user
+    groupadd -rf qvpn ; sleep 2s
+    sg qvpn -c "$VPN_CLIENT $VPN_OPTIONS"
 
-Again this script from Blame. Save and Exit.
+Save and Exit.
 
 In terminal
 
-sudo chmod +x /rw/config/rc.local
+    sudo chmod +x /rw/config/rc.local
 
 Exit terminal.
 
