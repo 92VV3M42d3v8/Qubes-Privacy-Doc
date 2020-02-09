@@ -23,13 +23,15 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
        sudo git clone https://github.com/asciimoo/searx.git
 
-    Now we're going to create a new user for Searx to use and assign it directory privileges:
+5. See Note below for Settings Alteration.
+
+6. Now we're going to create a new user for Searx to use and assign it directory privileges:
 
        sudo useradd searx -d /usr/local/searx
     
        sudo chown searx:searx -R /usr/local/searx
 
-5. Build Searx
+7. Build Searx
 
    Now we can begin building Searx.
 
@@ -49,7 +51,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
        pip3 install -r requirements.txt
 
-6. Launch Searx
+8. Launch Searx
 
    Now we can launch the main Searx program with Python:
 
@@ -61,11 +63,11 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
        nohup python searx/webapp.py &
 
-7. Now run a browser in same VM and open  http://127.0.0.1:8888
+9. Now run a browser in same VM and open  http://127.0.0.1:8888
    
-8. Now shut down this App VM.
+10. Now shut down this App VM.
 
-9. Now again start the App VM terminal and run following command
+11. Now again start the App VM terminal and run following command
 
        sudo gedit /rw/config/rc.local
    
@@ -83,3 +85,11 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
      
 If you run VPN you can set VPN VM as NetVM of this App VM.
      
+
+Note:
+
+   If you want to modify Settings.yml file, You have to do it after step 4. For that-
+   
+    sudo gedit /usr/local/searx/searx/settings.yml
+    
+   Alter settings as you want like altering Secretkey, default-theme etc. save it and exit. 
