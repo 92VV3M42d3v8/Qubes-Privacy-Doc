@@ -69,15 +69,15 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
 11. Now again start the App VM terminal and run following command
 
-       sudo gedit /rw/config/rc.local
+        sudo gedit /rw/config/rc.local
    
-   Delete everything and Paste following-
+    Delete everything and Paste following-
    
-       cd /usr/local/searx
+        cd /usr/local/searx
    
-       . ./venv3/bin/activate
+        . ./venv3/bin/activate
    
-       python3 searx/webapp.py
+        python3 searx/webapp.py
    
 10. Now again open browser and reach http://127.0.0.1:8888
     
