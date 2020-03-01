@@ -100,7 +100,7 @@ Replace X.X.X.X with following addresses written in front of VPN name in these t
 
     NordVPN - 103.86.99.99 or 103.86.96.96
 
-    IVPN - 10.0.254.2 or 10.0.254.3
+    IVPN - 10.0.254.102 or 10.0.254.103
 
     Perfect-Privacy - DNS address of VPN configuration file written after Remote
 
