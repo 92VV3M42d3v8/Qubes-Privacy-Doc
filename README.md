@@ -21,9 +21,13 @@ Search for auth-user-pass in theses lines and change it into
 
     auth-user-pass pass.txt
 
-Search for redirect-gateway def1 also and if not present write it there as it is in a new line.
+Search for 
 
-Also add these three lines 
+    redirect-gateway def1
+
+And if not present write it there as it is in a new line.
+
+Add these three lines 
 
     script-security 2
 
