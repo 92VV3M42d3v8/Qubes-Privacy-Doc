@@ -106,6 +106,8 @@ Replace X.X.X.X with following addresses written in front of VPN name in these t
 
     Mullvad - 10.8.0.1 or 10.14.0.1
 
+    Surfshark - 151.236.14.64 or 194.156.228.111
+
 Similarly you can ask your provider about these.
 
 Save and Exit.
