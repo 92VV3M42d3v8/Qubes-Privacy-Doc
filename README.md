@@ -3,7 +3,7 @@ It is a repository for documentation for running various Privacy Services in Qub
 
 How to Run VPN in Qubes-OS
 
-Create a App VM based on Fedora-30 with Sys-Firewall as networking and providing Network.
+Create a App VM based on Fedora-31 with Sys-Firewall as networking and providing Network.
 
 Now open a Browser in Disposable VM. Login to your VPN website and Download openvpn configuration files. Copy these files in Newly created App VM.
 
