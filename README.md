@@ -39,6 +39,12 @@ If there are already existing lines starting with up and down, Remove them.
 
 Save this file and Exit.
 
+Files like .crt and key files also needs to be placed in same vpn folder. they can be copied in a folder collectively with cp -R command.
+
+    $ cp /home/file /rw/config/vpn/file
+
+Configuration file can be altered if needed with correct location of them like file/xx.crt if copied folder name is file.
+
 Now again in App VM terminal run following command-
 
     sudo gedit /rw/config/vpn/pass.txt
