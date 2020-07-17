@@ -39,3 +39,9 @@ This VM should have no networking, HVM mode, no dispVM, Start automatically, inc
 MAC alter
 
 Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC address< Random< Save.
+
+Update dom0
+
+    $ sudo qubes-dom0-update
+    
+Update Templates and tor browser.    
