@@ -199,3 +199,5 @@ Now open terminal in Dom0
 Exit.
 
 Restart your VPN VM.
+
+Disclaimer: In my opinion no harm is done to any party. If anyone feel offended by any mean put a comment, I will be happy to help.
