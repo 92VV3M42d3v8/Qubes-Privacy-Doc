@@ -45,3 +45,12 @@ Update dom0
     $ sudo qubes-dom0-update
     
 Update Templates and tor browser.    
+
+
+Using USB without device widget
+
+    $ qvm-usb
+    
+    $ qvm-usb attach Vault sys-usb:2-10
+    
+    $ qvm-usb detach Vault sys-usb:2-10
