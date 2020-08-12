@@ -1,6 +1,6 @@
 A little Advanced Configuration for Qubes-OS use. (Might be buggy if you have WiFi connectivity and specific rules set on sys-firewall)
 
-Creating Media for Qubes-OS
+1. Creating Media for Qubes-OS
 
 Attach USB to VM in which you've downloaded iso.
 
@@ -22,16 +22,16 @@ This should create Installation media. Always install after testing media.
 
 During Install configuration, allow only Template installation (all 3). Rest everything disable (means don't create sys-net, anon-whonix, sys-usb, workvm etc)
 
-After Installation
+2. After Installation
 
-In dom0
+A. Creation of Default DispVM- In dom0
 
     [user@dom0 ~]$ qvm-create --template fedora-32 --label red fedora-32-dvm
     [user@dom0 ~]$ qvm-prefs fedora-32-dvm template_for_dispvms True
     [user@dom0 ~]$ qvm-features fedora-32-dvm appmenus-dispvm 1
     [user@dom0 ~]$ qubes-prefs default_dispvm fedora-32-dvm
     
-sys-net creation
+B. sys-net creation
 
     qvm-create -C DispVM -l red sys-net
     qvm-prefs sys-net virt_mode hvm
@@ -49,7 +49,7 @@ sys-net creation
   9th step should be skipped now. 10th step should be set in Qubes Global settings.
 
 
-sys-firewall creation
+C. sys-firewall creation
 
     qvm-create -C DispVM -l red sys-firewall
     qvm-prefs sys-firewall autostart true
@@ -58,7 +58,7 @@ sys-firewall creation
     qvm-features sys-firewall appmenus-dispvm ''
 
 
-sys-usb Creation
+D. sys-usb Creation
     
     qvm-create -C DispVM -l red sys-usb
     qvm-prefs sys-usb virt_mode hvm
@@ -73,40 +73,57 @@ sys-usb Creation
     
 Add first line 
 
-    sys-usb dom0 allow
+    sys-usb dom0 allow,user=root
     
 Save and exit.
 
 This VM should have no networking, HVM mode, no dispVM, Start automatically, included in backup. Don't hide USB controllers at system start-up.
 
-Set some settings in golbal settings as you like.
+Set some settings in global settings as you like.
 
 
-sys-whonix creation
+E. sys-whonix creation
 
     sudo qubesctl state.sls qvm.whonix-ws-dvm
     
     
-Default mgmt dvm creation
+F. Default mgmt dvm creation
 
     sudo qubesctl state.sls qvm.default-mgmt-dvm
 
 
-MAC alter
+3. MAC alter (not needed is sys-* are disposable.)
 
 Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC address< Random< Save.
 
-Update dom0
+4. Update dom0
 
-    $ sudo qubes-dom0-update
+       $ sudo qubes-dom0-update
     
-Update Templates and tor browser.    
+5. Update Templates and tor browser.    
 
+6. Using USB without device widget
 
-Using USB without device widget
-
-    $ qvm-usb
+       $ qvm-usb
     
-    $ qvm-usb attach Vault sys-usb:2-10
+       $ qvm-usb attach Vault sys-usb:2-10
     
-    $ qvm-usb detach Vault sys-usb:2-10
+       $ qvm-usb detach Vault sys-usb:2-10
+
+7. Clone Debian template-
+   
+       qvm-clone debian-10 debian-X
+       
+8. Install SearX, Syncthing etc. in Clone template always.  
+
+9. Using Block devices with cli-
+
+       $ qvm-block
+       
+       $ qvm-block attach work sys-usb:sda
+       
+   This should be visible in "other locations" of work VM. Use it and unmount by right click and unmount option when you are done. 
+   
+   Then in dom0
+   
+       $ qvm-block detach work sys-usb:sda
