@@ -108,15 +108,15 @@ Add these two lines just beneath first line
 
 Replace X.X.X.X with following addresses written in front of VPN name in these two lines-
 
-    NordVPN - 103.86.99.99 or 103.86.96.96
+    NordVPN - 103.86.99.99 or 103.86.96.96  (103.86.99.100 for Widevine installation)
 
-    IVPN - 10.0.254.102 or 10.0.254.103
+    IVPN - 10.0.254.102 or 10.0.254.103 (Antitracker)
 
     Perfect-Privacy - DNS address of VPN configuration file written after Remote
 
     Mullvad - 10.8.0.1 or 10.14.0.1
 
-    Surfshark - 151.236.14.64 or 194.156.228.111
+    Surfshark - 151.236.14.64 or 194.156.228.111 (clearweb)
 
 Similarly you can ask your provider about these.
 
