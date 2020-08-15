@@ -200,4 +200,8 @@ Exit.
 
 Restart your VPN VM.
 
+Note: Sometimes it may be needed later to convert rule no. 0 to allow another IP address then remove that rule and add by following-
+
+    qvm-firewall VPNVM add --before [last_drop_rule_#] action=accept dst4=y.y.y.y proto=tcp dstports=443
+
 Disclaimer: In my opinion no harm is done to any party. If anyone feel offended by any mean put a comment, I will be happy to help.
