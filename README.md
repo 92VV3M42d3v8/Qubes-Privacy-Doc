@@ -4,28 +4,28 @@ Syncthing in Qubes-OS
 
        qvm-clone debian-10 debian-X
     
-2. Install curl
+2. Run debian-X terminal. Also run a fresh disposable appVM to download key from syncthing.
 
-       sudo apt-get install curl
+3. In this dispVM go to https://syncthing.net/release-key.txt and copy this key and create a syncthing.pubkey file in template debian- X by pasting it. In debian-X:
 
-3. Provide network to this template by sys-firewall.
+       $ nano syncthing.pubkey
 
-4. Add the release PGP key
+4. Add key to keyring-
 
-       curl -s https://syncthing.net/release-key.txt | sudo apt-key add -
+       sudo apt-key add syncthing.pubkey
+
        
 5. Add the "stable" channel to your APT sources:
 
        echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
        
-6. Set network to none.
 
-7. Update and install syncthing:
+6. Update and install syncthing:
 
        sudo apt-get update
        
        sudo apt-get install syncthing
        
-8. Shut down template, (see below) create AppVM based on it. Start using Syncthing.
+7. Shut down template, (see below) create AppVM based on it. Start using Syncthing.
 
 Note: Ususally it's a good idea to set Maximum storage size to larger size for new template as you might need larger sharing storage sizes before creating AppVM.
