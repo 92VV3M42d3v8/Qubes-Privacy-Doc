@@ -137,3 +137,12 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
 11. How to run AppImage
 
     To be run they first need to be marked executable with chmod +x AppImage , where <AppImage> is the file name of the AppImage, including its file extension) and then run with ./AppImage . Either that or clicked/double-clicked in one's file manager.
+
+
+12. Disable Pasting into Vault domain by user error- 
+
+        [user@dom0 ~]$ sudo nano /etc/qubes-rpc/policy/qubes.ClipboardPaste
+        
+    Add before last line-
+    
+        $anyvm Vault deny
