@@ -143,6 +143,21 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
 
         [user@dom0 ~]$ sudo nano /etc/qubes-rpc/policy/qubes.ClipboardPaste
         
-    Add before last line-
+    Add line-
     
-        $anyvm Vault deny
+        @anyvm Vault deny
+
+13. Sample Qubes Qrexec policy (not tested)
+
+        /etc/qubes-rpc/policy/qubes.OpenURL:
+
+        @anyvm vault deny
+        @anyvm private deny
+        @anyvm banking deny
+        @anyvm @dispvm:fedora-32-dvm allow
+        @anyvm @anyvm ask,default_target=dispBrowser
+
+        
+        /etc/qubes-rpc/policy/qubes.OpenInVM:
+
+        @anyvm @anyvm ask
