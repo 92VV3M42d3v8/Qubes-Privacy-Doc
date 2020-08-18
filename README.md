@@ -114,7 +114,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
    
        qvm-clone debian-10 debian-X
        
-8. Install SearX, Syncthing etc. in Clone template always.  
+8. Install SearX, Syncthing, uget etc. in Clone template always.  
 
 9. Using Block devices with cli-
 
@@ -144,26 +144,26 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         $ cd /etc/qubes/policy.d/
         sudo nano 30-user.policy
 
-        * * @anyvm vault deny
-        qubes.ClipboardPaste * dom0 @anyvm ask
-        qubes.ClipboardPaste * Vault @anyvm ask
-        * * Vault @anyvm deny
-        qubes.ClipboardPaste * @dispvm:fedora-32-dvm Storage ask
-        qubes.VMShell * @anyvm @anyvm deny
-        qubes.VMExec * @anyvm @anyvm deny
-        qubes.VMSExecGUI * @anyvm @anyvm deny
-        * * @anyvm Bank deny
-        qubes.Filecopy * @anyvm Storage ask
-        qubes.Filecopy * @anyvm @default ask
-        * * Bank @anyvm deny
-        qubes.Filecopy * @anyvm @anyvm deny
-        qubes.ClipboardPaste * @anyvm @anyvm deny
-        qubes.OpenInVM * @Storage @dispvm:debian-10-dvm allow
-        qubes.OpenInVM * @anyvm @dispvm:debian-10-dvm ask
-        qubes.OpenInVM * @anyvm @anyvm deny
-        * * @anyvm Storage deny
-        * * Storage @anyvm deny
-        * * @dispvm:debian-10-dvm @anyvm deny
+        *                    *  @anyvm                vault                  deny
+        qubes.ClipboardPaste *  dom0                  @anyvm                 ask
+        qubes.ClipboardPaste *  Vault                 @anyvm                 ask
+        *                    *  Vault                 @anyvm                 deny
+        qubes.ClipboardPaste *  @dispvm:fedora-32-dvm Storage                ask
+        qubes.VMShell        *  @anyvm                @anyvm                 deny
+        qubes.VMExec         *  @anyvm                @anyvm                 deny
+        qubes.VMSExecGUI     *  @anyvm                @anyvm                 deny
+        *                    *  @anyvm                Bank                   deny
+        qubes.Filecopy       *  @anyvm                Storage                ask
+        qubes.Filecopy       *  @anyvm                @default               ask
+        *                    *  Bank                  @anyvm                 deny
+        qubes.Filecopy       *  @anyvm                @anyvm                 deny
+        qubes.ClipboardPaste *  @anyvm                @anyvm                 deny
+        qubes.OpenInVM       *  @Storage              @dispvm:debian-10-dvm  allow
+        qubes.OpenInVM       *  @anyvm                @dispvm:debian-10-dvm  ask
+        qubes.OpenInVM       *  @anyvm                @anyvm                 deny
+        *                    *  @anyvm                Storage                deny
+        *                    *  Storage               @anyvm                 deny
+        *                    *  @dispvm:debian-10-dvm @anyvm                 deny
         
 13. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
 
