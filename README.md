@@ -139,7 +139,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
     To be run they first need to be marked executable with chmod +x AppImage , where <AppImage> is the file name of the AppImage, including its file extension) and then run with ./AppImage . Either that or clicked/double-clicked in one's file manager.
 
 
-12. Disable Pasting into Vault domain by user error- 
+12. (May not be needed) Disable Pasting into Vault domain by user error- 
 
         [user@dom0 ~]$ sudo nano /etc/qubes-rpc/policy/qubes.ClipboardPaste
         
@@ -147,17 +147,53 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
     
         @anyvm Vault deny
 
-13. Sample Qubes Qrexec policy (not tested)
+13. Sample Qubes Qrexec policy (not tested)(Above 12 may not be needed)
 
-        /etc/qubes-rpc/policy/qubes.OpenURL:
+        $ cd /etc/qubes/policy.d/
+        sudo nano 30-user.policy
 
-        @anyvm vault deny
-        @anyvm private deny
-        @anyvm banking deny
-        @anyvm @dispvm:fedora-32-dvm allow
-        @anyvm @anyvm ask,default_target=dispBrowser
-
+        * * @anyvm vault deny
+        qubes.ClipboardPaste * dom0 @anyvm ask
+        qubes.ClipboardPaste * Vault @anyvm ask
+        * * Vault @anyvm deny
+        qubes.VMShell * @anyvm @anyvm deny
+        qubes.VMRootShell * @anyvm @anyvm deny
+        qubes.VMExec * @anyvm @anyvm deny
+        qubes.VMSExecGUI * @anyvm @anyvm deny
+        * * @anyvm Bank deny
+        qubes.Filecopy * @anyvm Storage ask
+        qubes.Filecopy * @anyvm @default ask
+        * * Bank @anyvm deny
+        qubes.Filecopy * @anyvm @anyvm deny
+        qubes.ClipboardPaste * @anyvm @anyvm deny
+        qubes.OpenInVM * @anyvm @dispvm:debian-10-dvm allow
+        qubes.OpenInVM * @anyvm @anyvm deny
+        * * @anyvm Storage deny
+        * * Storage @anyvm deny
+        * * @dispvm:debian-10-dvm @anyvm deny
         
-        /etc/qubes-rpc/policy/qubes.OpenInVM:
+14. How to open every(many file types) file from a VM like Storage VM to dispVM by default:(not working yet because of 13)
 
-        @anyvm @anyvm ask
+    Create a file in StorageVM
+   
+        cd ~/.local/share/applications
+        sudo gedit browser_vm.desktop
+      
+   Type following in Editor-
+       
+        [Desktop Entry]
+        Encoding=UTF-8
+        Name=BrowserVM
+        Exec=qvm-open-in-vm browser %u
+        Terminal=false
+        X-MultipleArgs=false
+        Type=Application
+        Categories=Network;WebBrowser;
+        MimeType=x-scheme-handler/unknown;x-scheme-handler/about;text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;application/pdf;text/plain
+        
+   Set it as your default browser-
+   
+        user@Storage:~$ xdg-settings set default-web-browser browser_vm.desktop
+        
+   Open any pdf or text or jpg default application (from file property) to browser_vm.desktop    
+     
