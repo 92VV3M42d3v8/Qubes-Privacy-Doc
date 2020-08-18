@@ -139,15 +139,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
     To be run they first need to be marked executable with chmod +x AppImage , where <AppImage> is the file name of the AppImage, including its file extension) and then run with ./AppImage . Either that or clicked/double-clicked in one's file manager.
 
 
-12. (May not be needed) Disable Pasting into Vault domain by user error- 
-
-        [user@dom0 ~]$ sudo nano /etc/qubes-rpc/policy/qubes.ClipboardPaste
-        
-    Add line-
-    
-        @anyvm Vault deny
-
-13. Sample Qubes Qrexec policy (not tested)(Above 12 may not be needed)
+12. Sample Qubes Qrexec policy 
 
         $ cd /etc/qubes/policy.d/
         sudo nano 30-user.policy
@@ -158,7 +150,6 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         * * Vault @anyvm deny
         qubes.ClipboardPaste * @dispvm:fedora-32-dvm Storage ask
         qubes.VMShell * @anyvm @anyvm deny
-        qubes.VMRootShell * @anyvm @anyvm deny
         qubes.VMExec * @anyvm @anyvm deny
         qubes.VMSExecGUI * @anyvm @anyvm deny
         * * @anyvm Bank deny
@@ -173,9 +164,8 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         * * @anyvm Storage deny
         * * Storage @anyvm deny
         * * @dispvm:debian-10-dvm @anyvm deny
-        * * @anyvm @anyvm deny
         
-14. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
+13. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
 
     Create a file in StorageVM
    
@@ -194,6 +184,8 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         Categories=Network;WebBrowser;
         MimeType=x-scheme-handler/unknown;x-scheme-handler/about;text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;application/pdf;text/plain
         
+   Save with ctrl+x then y then enter.
+   
    Set it as your default browser-
    
         user@Storage:~$ xdg-settings set default-web-browser browser_vm.desktop
