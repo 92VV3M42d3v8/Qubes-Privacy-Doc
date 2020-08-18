@@ -156,6 +156,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         qubes.ClipboardPaste * dom0 @anyvm ask
         qubes.ClipboardPaste * Vault @anyvm ask
         * * Vault @anyvm deny
+        qubes.ClipboardPaste * @dispvm:fedora-32-dvm Storage ask
         qubes.VMShell * @anyvm @anyvm deny
         qubes.VMRootShell * @anyvm @anyvm deny
         qubes.VMExec * @anyvm @anyvm deny
@@ -172,7 +173,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         * * Storage @anyvm deny
         * * @dispvm:debian-10-dvm @anyvm deny
         
-14. How to open every(many file types) file from a VM like Storage VM to dispVM by default:(not working yet because of 13)
+14. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
 
     Create a file in StorageVM
    
@@ -184,7 +185,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         [Desktop Entry]
         Encoding=UTF-8
         Name=BrowserVM
-        Exec=qvm-open-in-vm browser %u
+        Exec=qvm-open-in-vm @dispvm:debian-10-dvm %u
         Terminal=false
         X-MultipleArgs=false
         Type=Application
@@ -195,5 +196,5 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
    
         user@Storage:~$ xdg-settings set default-web-browser browser_vm.desktop
         
-   Open any pdf or text or jpg default application (from file property) to browser_vm.desktop    
+   Change any pdf or text or jpg default application (from file property) to browser_vm.desktop    
      
