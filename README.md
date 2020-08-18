@@ -167,11 +167,13 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         * * Bank @anyvm deny
         qubes.Filecopy * @anyvm @anyvm deny
         qubes.ClipboardPaste * @anyvm @anyvm deny
-        qubes.OpenInVM * @anyvm @dispvm:debian-10-dvm allow
+        qubes.OpenInVM * @Storage @dispvm:debian-10-dvm allow
+        qubes.OpenInVM * @anyvm @dispvm:debian-10-dvm ask
         qubes.OpenInVM * @anyvm @anyvm deny
         * * @anyvm Storage deny
         * * Storage @anyvm deny
         * * @dispvm:debian-10-dvm @anyvm deny
+        * * @anyvm @anyvm deny
         
 14. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
 
