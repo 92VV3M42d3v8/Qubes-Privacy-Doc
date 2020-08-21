@@ -157,6 +157,8 @@ Delete everything and Add following-
 
 Save and exit.
 
+There is a firewall script here also- https://github.com/tasket/Qubes-vpn-support/blob/master/files-main/proxy-firewall-restrict
+
 In Terminal
 
     sudo chmod +x /rw/config/qubes-firewall-user-script
