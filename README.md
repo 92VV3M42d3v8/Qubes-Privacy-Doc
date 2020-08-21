@@ -23,6 +23,7 @@ This should create Installation media. Always install after testing media.
 During Install configuration, allow only Template installation (all 3). Rest everything disable (means don't create sys-net, anon-whonix, sys-usb, workvm etc)
 
 2. After Installation
+Method 1 (don't use)(first see method 2 and then use this method accordingly)
 
 A. Creation of Default DispVM- In dom0
 
@@ -81,6 +82,45 @@ This VM should have no networking, HVM mode, no dispVM, Start automatically, inc
 
 Set some settings in global settings as you like.
 
+Method 2:
+
+If they are to be based on Minimal fedora-
+
+    qvm-run -u root network-mini xterm
+
+
+network-mini template= 
+
+    dnf install pciutils vim-minimal less psmisc qubes-core-agent-networking iproute qubes-core-agent-network-manager network-manager-applet notification-daemon gnome-keyring qubes-core-agent-nautilus gedit
+    
+
+usb-mini template=
+
+    dnf install pciutils vim-minimal less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-usb-proxy qubes-input-proxy-sender qubes-gpg-split oathtool gedit
+    
+  Build keepassxc without networking in it.
+  
+Create DispVM based on network-mini and usb-mini and use them as base for sys-net, sys-firewall, sys-usb.
+       
+       https://www.qubes-os.org/doc/disposablevm-customization/#creating-a-new-disposablevm-template
+
+
+vpn-mini template=
+
+    dnf install pciutils vim-minimal less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus gedit openvpn iptables
+    
+    
+fedora-mega =
+
+    dnf install pciutils vim-minimal less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo
+    
+    
+fedora-extreme =
+
+    dnf install pciutils vim-minimal less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-gpg-split qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo 
+    
+   Also intall gimp, vlc, searx, syncthing in it. 
+
 
 E. sys-whonix creation
 
@@ -100,7 +140,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
 
        $ sudo qubes-dom0-update
     
-5. Update Templates and tor browser.    
+5. Update Templates and tor browser. (first see 15)   
 
 6. Using USB without device widget
 
@@ -139,12 +179,24 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
     To be run they first need to be marked executable with chmod +x AppImage , where <AppImage> is the file name of the AppImage, including its file extension) and then run with ./AppImage . Either that or clicked/double-clicked in one's file manager.
 
 
-12. Sample Qubes Qrexec policy 
+12. sys-net, sys-firewall = network-mini
+
+    sys-usb, vault = usb-mini
+    
+    DispVM, Bank, mailvm, storagevm = fedora-mega
+    
+    SurfVM, MediaVM, Syncthing vm = fedora-extreme
+    
+    VpnVM (proxy) = vpn-mini
+
+
+13. Sample Qubes Qrexec policy 
 
         $ cd /etc/qubes/policy.d/
         sudo nano 30-user.policy
 
-        *                    *  @anyvm                vault                  deny
+        *                    *  @anyvm                Vault                  deny
+        *                    *  @anyvm                Bank                   deny
         qubes.ClipboardPaste *  dom0                  @anyvm                 ask
         qubes.ClipboardPaste *  Vault                 @anyvm                 ask
         *                    *  Vault                 @anyvm                 deny
@@ -152,7 +204,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         qubes.VMShell        *  @anyvm                @anyvm                 deny
         qubes.VMExec         *  @anyvm                @anyvm                 deny
         qubes.VMSExecGUI     *  @anyvm                @anyvm                 deny
-        *                    *  @anyvm                Bank                   deny
+        qubes.UpdatesProxy   *  @type:TemplateVM      @default               allow target=sys-whonix
         qubes.Filecopy       *  @anyvm                Storage                ask
         qubes.Filecopy       *  @anyvm                @default               ask
         *                    *  Bank                  @anyvm                 deny
@@ -165,7 +217,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         *                    *  Storage               @anyvm                 deny
         *                    *  @dispvm:debian-10-dvm @anyvm                 deny
         
-13. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
+14. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
 
     Create a file in StorageVM
    
@@ -192,3 +244,8 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         
    Change any pdf or text or jpg default application (from file property) to browser_vm.desktop    
      
+
+15. Onionized Repositories
+
+        https://www.whonix.org/wiki/Onionizing_Repositories
+        https://www.qubes-os.org/news/2019/04/17/tor-onion-services-available-again/
