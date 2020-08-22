@@ -91,14 +91,13 @@ If they are to be based on Minimal fedora-
 
 network-mini template= 
 
-    dnf install pciutils vim-minimal less psmisc qubes-core-agent-networking iproute qubes-core-agent-network-manager network-manager-applet notification-daemon gnome-keyring qubes-core-agent-nautilus gedit
+    dnf install pciutils less psmisc qubes-core-agent-networking iproute qubes-core-agent-network-manager network-manager-applet notification-daemon gnome-keyring qubes-core-agent-nautilus gedit qubes-core-agent-passwordless-root polkit
     
 
 usb-mini template=
 
-    dnf install pciutils vim-minimal less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-usb-proxy qubes-input-proxy-sender qubes-gpg-split oathtool gedit
+    dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-usb-proxy qubes-input-proxy-sender qubes-gpg-split oathtool gedit keepassxc qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo
     
-  Build keepassxc without networking in it.
   
 Create DispVM based on network-mini and usb-mini and use them as base for sys-net, sys-firewall, sys-usb.
        
@@ -107,19 +106,34 @@ Create DispVM based on network-mini and usb-mini and use them as base for sys-ne
 
 vpn-mini template=
 
-    dnf install pciutils vim-minimal less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus gedit openvpn iptables
-    
-    
+    dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus gedit openvpn iptables qubes-core-agent-networking qubes-core-agent-passwordless-root polkit
+
+
 fedora-mega =
 
-    dnf install pciutils vim-minimal less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo
-    
-    
+    dnf install pciutils vim-minimal less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo pulseaudio-qubes
+
+
 fedora-extreme =
 
-    dnf install pciutils vim-minimal less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-gpg-split qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo 
+    dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo gimp pulseaudio-qubes uget
     
-   Also intall gimp, vlc, searx, syncthing in it. 
+   Also intall vlc, searx, syncthing in it. 
+   
+ Vlc-
+ 
+    $> su -
+    #> dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+    #> dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+    #> dnf install vlc
+
+ Searx-
+ 
+    https://github.com/92VV3M42d3v8/Qubes-Privacy-Doc/tree/Searx-instance--Private
+ 
+ Syncthing-
+ 
+    https://github.com/92VV3M42d3v8/Qubes-Privacy-Doc/tree/Syncthing
 
 
 E. sys-whonix creation
@@ -181,9 +195,9 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
 
 12. sys-net, sys-firewall = network-mini
 
-    sys-usb, vault = usb-mini
+    sys-usb, vault, StorageVM = usb-mini
     
-    DispVM, Bank, mailvm, storagevm = fedora-mega
+    DispVM, Bank, mailvm = fedora-mega
     
     SurfVM, MediaVM, Syncthing vm = fedora-extreme
     
@@ -217,6 +231,10 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         *                    *  Storage               @anyvm                 deny
         *                    *  @dispvm:debian-10-dvm @anyvm                 deny
         
+  
+  If Any person among readers have a great policy file to share, please share with me.   
+
+
 14. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
 
     Create a file in StorageVM
