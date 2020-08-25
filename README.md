@@ -89,14 +89,14 @@ If they are to be based on Minimal fedora-
     qvm-run -u root network-mini xterm
 
 
-network-mini template= 
+network-mini template= ( Don't know if less is required.)
 
-    dnf install pciutils less psmisc qubes-core-agent-networking iproute qubes-core-agent-network-manager network-manager-applet notification-daemon gnome-keyring qubes-core-agent-nautilus gedit qubes-core-agent-passwordless-root polkit
+    dnf install pciutils less psmisc qubes-core-agent-networking iproute qubes-core-agent-network-manager network-manager-applet notification-daemon gnome-keyring 
     
 
 usb-mini template=
 
-    dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-usb-proxy qubes-input-proxy-sender qubes-gpg-split oathtool gedit keepassxc qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo
+    dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-usb-proxy qubes-input-proxy-sender qubes-gpg-split oathtool gedit keepassxc qubes-core-agent-passwordless-root polkit pycairo
     
   
 Create DispVM based on network-mini and usb-mini and use them as base for sys-net, sys-firewall, sys-usb.
@@ -111,14 +111,14 @@ vpn-mini template=
 
 fedora-mega =
 
-    dnf install pciutils vim-minimal less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo pulseaudio-qubes
+    dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo pulseaudio-qubes
 
 
-fedora-extreme =
+fedora-extreme = (I prefer full debian template clone modified instead of fedora-extreme)
 
     dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo gimp pulseaudio-qubes uget
     
-   Also intall vlc, searx, syncthing in it. 
+   Also intall vlc, searx, syncthing, keybase in it. 
    
  Vlc-
  
@@ -135,6 +135,9 @@ fedora-extreme =
  
     https://github.com/92VV3M42d3v8/Qubes-Privacy-Doc/tree/Syncthing
 
+ Keybase-
+
+    https://prerelease.keybase.io/keybase_amd64.deb 
 
 E. sys-whonix creation
 
@@ -195,11 +198,11 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
 
 12. sys-net, sys-firewall = network-mini
 
-    sys-usb, vault, StorageVM = usb-mini
+    sys-usb, vault, gpg-vm, StorageVM = usb-mini
     
-    DispVM, Bank, mailvm = fedora-mega
+    DispVM, Bank, mailvm (tutanota) = fedora-mega
     
-    SurfVM, MediaVM, Syncthing vm = fedora-extreme
+    SurfVM, MediaVM, Syncthing vm, keybase = fedora-extreme/ debian
     
     VpnVM (proxy) = vpn-mini
 
@@ -267,3 +270,39 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
 
         https://www.whonix.org/wiki/Onionizing_Repositories
         https://www.qubes-os.org/news/2019/04/17/tor-onion-services-available-again/
+        
+16. Split-GPG 
+
+    1.Keybase
+
+        [user@dom0 ~]$ sudo qubes-dom0-update qubes-gpg-split-dom0
+        
+        [user@usb-mini ~]$ sudo dnf install qubes-gpg-split
+        
+        [user@usb-mini ~]$ gpg2 --gen-key
+        
+        [user@gpg-vm ~]$ gpg2 -K
+        
+        [user@gpg-vm ~]$ echo "export QUBES_GPG_AUTOACCEPT=120" >> ~/.profile
+        
+        [user@keybase ~]$ sudo bash
+        
+        [root@keybase ~]$  echo "gpg-vm" > /rw/config/gpg-split-domain
+        
+        [user@keybase ~]$ keybase config set gpg.command /usr/bin/qubes-gpg-client-wrapper
+        
+        [user@keybase ~]$ keybase pgp select
+        
+    2. https://www.qubes-os.org/doc/split-gpg/#using-thunderbird--enigmail-with-split-gpg
+    
+    3. https://www.qubes-os.org/doc/split-gpg/#importing-public-keys
+    
+    4. https://www.qubes-os.org/doc/split-gpg/#advanced-using-split-gpg-with-subkeys
+    
+ 
+ 17.    https://github.com/rustybird/qubes-split-dm-crypt
+ 
+ 
+ 18.    https://github.com/Qubes-Community/Contents/blob/master/docs/configuration/http-proxy.md
+ 
+ 19. 
