@@ -24,7 +24,7 @@ During Install configuration, allow Template installation (all 3).(Qubes don't p
 
 2. After Installation (see 13)
 
-My templates= t-network, t-secure, t-vpn, fedora(*), fedora-minimal(with nano)(*), debian(*), debian-X, whonix-gw(*), whonix-ws(*). (all offline) (* means unaltered mostly)
+My templates= t-network, t-secure, t-vpn, debian-X, fedora-minimal(with nano), fedora, debian, whonix-gw, whonix-ws. (all offline)
 
 My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online) ( only two are online)
 
