@@ -20,18 +20,33 @@ Usually device is /dev/sda
     
 This should create Installation media. Always install after testing media.    
 
-During Install configuration, allow only Template installation (all 3). Rest everything disable (means don't create sys-net, anon-whonix, sys-usb, workvm etc)
+During Install configuration, allow Template installation (all 3).(Qubes don't provide minimal template yet so allow here to create sys-*, disp-vm and templates over tor)
 
-2. After Installation
+2. After Installation (see 13)
+
+My templates= t-network, t-secure, t-vpn, fedora(*), fedora-minimal(with nano)(*), debian(*), debian-X, whonix-gw(*), whonix-ws(*). (all offline) (* means unaltered mostly)
+
+My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online) ( only two are online)
+
+My Appvm= Vault(offline), Bank, Mailvm, HardCore, Surf, Multimedia, storage(offline), GPG(offline), sync, Nord, ivpn, sys-whonix, keybasethunder
+
+My Disp-Appvm= sys-net, sys-firewall(online), sys-usb, fileopen
+
+{ fileopen is created with (qvm-create -C DispVM -l yellow fileopen) base debian-X-dvm.}
+
+Some appvms arise out of requirements too.
+
 Method 1 (don't use)(first see method 2 and then use this method accordingly)
 
 A. Creation of Default DispVM- In dom0
 
-    [user@dom0 ~]$ qvm-create --template fedora-32 --label red fedora-32-dvm
-    [user@dom0 ~]$ qvm-prefs fedora-32-dvm template_for_dispvms True
-    [user@dom0 ~]$ qvm-features fedora-32-dvm appmenus-dispvm 1
-    [user@dom0 ~]$ qubes-prefs default_dispvm fedora-32-dvm
+    [user@dom0 ~]$ qvm-create --template debian-X --label red debian-X-dvm
+    [user@dom0 ~]$ qvm-prefs debian-X-dvm template_for_dispvms True
+    [user@dom0 ~]$ qvm-features debian-X-dvm appmenus-dispvm 1
+    [user@dom0 ~]$ qubes-prefs default_dispvm debian-X-dvm
     
+   Here debian-X is clone of debian template (modified later). Set networking to none.
+
 B. sys-net creation
 
     qvm-create -C DispVM -l red sys-net
@@ -86,30 +101,35 @@ Method 2:
 
 If they are to be based on Minimal fedora-
 
-    qvm-run -u root network-mini xterm
+    qvm-run -u root t-network xterm
 
 
-network-mini template= ( Don't know if less is required.)
+t-network template= 
 
-    dnf install pciutils less psmisc qubes-core-agent-networking iproute qubes-core-agent-network-manager network-manager-applet notification-daemon gnome-keyring 
+    dnf install psmisc qubes-core-agent-networking iproute qubes-core-agent-network-manager network-manager-applet 
     
 
-usb-mini template=
+t-secure template= (see 12 below first)
 
-    dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-usb-proxy qubes-input-proxy-sender qubes-gpg-split oathtool gedit keepassxc qubes-core-agent-passwordless-root polkit pycairo
+    dnf install psmisc gnome-keyring qubes-core-agent-nautilus qubes-usb-proxy qubes-input-proxy-sender qubes-gpg-split oathtool keepassxc qubes-core-agent-passwordless-root polkit pycairo
     
   
-Create DispVM based on network-mini and usb-mini and use them as base for sys-net, sys-firewall, sys-usb.
+t-secure template Volume size should be increased to 40-50 GB.  
+  
+Create DispVM based on t-network and t-secure and use them as base for sys-net, sys-firewall, sys-usb.
        
        https://www.qubes-os.org/doc/disposablevm-customization/#creating-a-new-disposablevm-template
 
 
-vpn-mini template=
-
-    dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus gedit openvpn iptables qubes-core-agent-networking qubes-core-agent-passwordless-root polkit
+You have to create t-network-dvm and t-secure-dvm and then have to follow method 1. Method 1 pick default dispvm, so always change default dispvm to as requirement before creating sys-* based on that.
 
 
-fedora-mega =
+t-vpn template=
+
+    dnf install psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus gedit openvpn iptables qubes-core-agent-networking
+
+
+fedora-mega = (I prefer fedora-32)
 
     dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo pulseaudio-qubes
 
@@ -118,7 +138,7 @@ fedora-extreme = (I prefer full debian template clone modified instead of fedora
 
     dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo gimp pulseaudio-qubes uget
     
-   Also intall vlc, searx, syncthing, keybase in it. 
+   Also intall vlc, searx, syncthing, keybase, uget in it. 
    
  Vlc-
  
@@ -157,23 +177,13 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
 
        $ sudo qubes-dom0-update
     
-5. Update Templates and tor browser. (first see 15)   
+5. Update Templates and tor browser. (first see 13)   
 
-6. Using USB without device widget
-
-       $ qvm-usb
-    
-       $ qvm-usb attach Vault sys-usb:2-10
-    
-       $ qvm-usb detach Vault sys-usb:2-10
-
-7. Clone Debian template-
+6. Clone Debian template-
    
        qvm-clone debian-10 debian-X
        
-8. Install SearX, Syncthing, uget etc. in Clone template always.  
-
-9. Using Block devices with cli-
+7. Using Block devices with cli-
 
        $ qvm-block
        
@@ -185,72 +195,100 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
    
        $ qvm-block detach work sys-usb:sda
 
-10. Keyfiles for some applications-
+8. Keyfiles for some applications-
 
         Brave browser- https://brave-browser-apt-release.s3.brave.com/brave-core.asc
         
         Chrome browser- https://dl.google.com/linux/linux_signing_key.pub
         
-11. How to run AppImage
+9. How to run AppImage
 
     To be run they first need to be marked executable with chmod +x AppImage , where <AppImage> is the file name of the AppImage, including its file extension) and then run with ./AppImage . Either that or clicked/double-clicked in one's file manager.
 
 
-12. sys-net, sys-firewall = network-mini
+10. A. Templates for different App and DispVM
 
-    sys-usb, vault, gpg-vm, StorageVM = usb-mini
+    sys-net, sys-firewall = t-network-dvm
     
-    DispVM, Bank, mailvm (tutanota) = fedora-mega
+    sys-usb = t-secure-dvm
     
-    SurfVM, MediaVM, Syncthing vm, keybase = fedora-extreme/ debian
+    fileopen = debian-X-dvm
     
-    VpnVM (proxy) = vpn-mini
+    sys-whonix = whonix-gw
+    
+    t-network-dvm = t-network
+    
+    t-secure-dvm = t-secure
+    
+    whonix-ws-dvm = whonix-ws
+    
+    debian-X-dvm = debian-X
+    
+    vault, gpg-vm, StorageVM = t-secure
+    
+    hardcore = debian
+    
+    Multimedia, Surf, Sync, keybasethunder = debian-X
+    
+    VpnVM (proxy) = t-vpn
+    
+    fedora-dvm, default-mgmt-dvm, mailvm, Bank = fedora
+    
+    B. Networking Structure (not always same, I prefer to change vpn, appvm names, and networking for them)
+    
+     All templates are offline.
+     
+     Among DVM-templates fedora-dvm is via sys-firewall and whonix-dvm via sys-whonix.
+     
+     Bank, Nord, ivpn, mailvm via sys-firewall
+     
+     Rest appvm are either offline or passing via vpn.
+     
 
-
-13. Sample Qubes Qrexec policy 
+11. Sample Qubes Qrexec policy ( WIP- Changes frequently)
 
         $ cd /etc/qubes/policy.d/
         sudo nano 30-user.policy
 
         *                    *  @anyvm                Vault                  deny
         *                    *  @anyvm                Bank                   deny
-        qubes.ClipboardPaste *  dom0                  @anyvm                 ask
-        qubes.ClipboardPaste *  Vault                 @anyvm                 ask
-        *                    *  Vault                 @anyvm                 deny
-        qubes.ClipboardPaste *  @dispvm:fedora-32-dvm Storage                ask
         qubes.VMShell        *  @anyvm                @anyvm                 deny
         qubes.VMExec         *  @anyvm                @anyvm                 deny
         qubes.VMSExecGUI     *  @anyvm                @anyvm                 deny
+        qubes.ClipboardPaste *  dom0                  @anyvm                 ask
+        qubes.ClipboardPaste *  Vault                 @anyvm                 ask
+        *                    *  Vault                 @anyvm                 deny
+        *                    *  Bank                  @anyvm                 deny
+        qubes.ClipboardPaste *  @anyvm                Storage                ask
+        qubes.ClipboardPaste *  @anyvm                @anyvm                 deny
         qubes.UpdatesProxy   *  @type:TemplateVM      @default               allow target=sys-whonix
         qubes.Filecopy       *  @anyvm                Storage                ask
         qubes.Filecopy       *  @anyvm                @default               ask
-        *                    *  Bank                  @anyvm                 deny
         qubes.Filecopy       *  @anyvm                @anyvm                 deny
-        qubes.ClipboardPaste *  @anyvm                @anyvm                 deny
-        qubes.OpenInVM       *  @Storage              @dispvm:debian-10-dvm  allow
-        qubes.OpenInVM       *  @anyvm                @dispvm:debian-10-dvm  ask
+        qubes.OpenInVM       *  @Storage              fileopen               allow
         qubes.OpenInVM       *  @anyvm                @anyvm                 deny
         *                    *  @anyvm                Storage                deny
         *                    *  Storage               @anyvm                 deny
-        *                    *  @dispvm:debian-10-dvm @anyvm                 deny
+        *                    *  fileopen              @anyvm                 deny
+        *                    *  @dispvm:debian-X-dvm  @anyvm                 deny
         
   
   If Any person among readers have a great policy file to share, please share with me.   
 
 
-14. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
+12. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
 
-    Create a file in StorageVM
+    Create a file in StorageVM ( below instuctions are based on t-secure without passwordless root.)
    
-        cd ~/.local/share/applications
-        sudo gedit browser_vm.desktop
+        bash-5.0# mkdir /home/user/.local/share/applications
+                  nano /home/user/.local/share/applications/browser-dvm.desktop      
       
    Type following in Editor-
        
         [Desktop Entry]
         Encoding=UTF-8
         Name=BrowserVM
-        Exec=qvm-open-in-vm @dispvm:debian-10-dvm %u
+        Exec=qvm-open-in-vm fileopen %u
         Terminal=false
         X-MultipleArgs=false
         Type=Application
@@ -261,17 +299,17 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
    
    Set it as your default browser-
    
-        user@Storage:~$ xdg-settings set default-web-browser browser_vm.desktop
+        bash-5.0# xdg-settings set default-web-browser browser-dvm.desktop
         
-   Change any pdf or text or jpg default application (from file property) to browser_vm.desktop    
+   Change any pdf or text or jpg default application (from file property) to browser-dvm.desktop    
      
 
-15. Onionized Repositories
+13. Onionized Repositories
 
         https://www.whonix.org/wiki/Onionizing_Repositories
         https://www.qubes-os.org/news/2019/04/17/tor-onion-services-available-again/
         
-16. Split-GPG 
+14. Split-GPG 
 
     1.Keybase
 
@@ -300,9 +338,12 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
     4. https://www.qubes-os.org/doc/split-gpg/#advanced-using-split-gpg-with-subkeys
     
  
- 17.    https://github.com/rustybird/qubes-split-dm-crypt
+ 15.    https://github.com/rustybird/qubes-split-dm-crypt
  
+        https://github.com/Qubes-Community/Contents/blob/master/docs/configuration/http-proxy.md
  
- 18.    https://github.com/Qubes-Community/Contents/blob/master/docs/configuration/http-proxy.md
+        https://www.qubes-os.org/doc/disposablevm-customization/#customization-of-disposablevm
  
- 19. 
+        https://tails.boum.org/doc/about/features/index.en.html
+ 
+        https://0xacab.org/jvoisin/mat2
