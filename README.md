@@ -29,3 +29,9 @@ Syncthing in Qubes-OS
 7. Shut down template, (see below) create AppVM based on it. Start using Syncthing.
 
 Note: Ususally it's a good idea to set Maximum storage size to larger size for new template as you might need larger sharing storage sizes before creating AppVM.
+
+8. In Fedora, It's extremely simple.
+
+        sudo dnf install syncthing
+        
+   Done.     
