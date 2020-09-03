@@ -1,4 +1,4 @@
-A little Advanced Configuration for Qubes-OS use. (Might be buggy if you have WiFi connectivity and specific rules set on sys-firewall)
+A little Advanced Configuration for Qubes-OS use. (Might be buggy if you have WiFi connectivity and specific rules set on sys-firewall)( I have just recently switched from Windows to directly Qubes, with no knowledge of linux)
 
 1. Creating Media for Qubes-OS
 
@@ -147,6 +147,11 @@ fedora-extreme = (I prefer full debian template clone modified instead of fedora
     #> dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
     #> dnf install vlc
 
+  In Debian-
+  
+    sudo apt-get install vlc
+
+
  Searx-
  
     https://github.com/92VV3M42d3v8/Qubes-Privacy-Doc/tree/Searx-instance--Private
@@ -250,30 +255,42 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         $ cd /etc/qubes/policy.d/
         sudo nano 30-user.policy
 
+        *                    *  @anyvm                Hardcore               deny
+        *                    *  Hardcore              @anyvm                 deny
         *                    *  @anyvm                Vault                  deny
         *                    *  @anyvm                Bank                   deny
+        *                    *  Bank                  @anyvm                 deny
         qubes.VMShell        *  @anyvm                @anyvm                 deny
         qubes.VMExec         *  @anyvm                @anyvm                 deny
         qubes.VMSExecGUI     *  @anyvm                @anyvm                 deny
         qubes.ClipboardPaste *  dom0                  @anyvm                 ask
         qubes.ClipboardPaste *  Vault                 @anyvm                 ask
         *                    *  Vault                 @anyvm                 deny
-        *                    *  Bank                  @anyvm                 deny
         qubes.ClipboardPaste *  @anyvm                Storage                ask
         qubes.ClipboardPaste *  @anyvm                @anyvm                 deny
         qubes.UpdatesProxy   *  @type:TemplateVM      @default               allow target=sys-whonix
         qubes.Filecopy       *  @anyvm                Storage                ask
         qubes.Filecopy       *  @anyvm                @default               ask
         qubes.Filecopy       *  @anyvm                @anyvm                 deny
-        qubes.OpenInVM       *  @Storage              fileopen               allow
+        qubes.OpenInVM       *  Storage               fileopen               allow
         qubes.OpenInVM       *  @anyvm                @anyvm                 deny
         *                    *  @anyvm                Storage                deny
         *                    *  Storage               @anyvm                 deny
+        *                    *  Surf                  @anyvm                 deny
+        *                    *  @anyvm                Surf                   deny
+        *                    *  sync                  @anyvm                 deny
+        *                    *  @anyvm                sync                   deny
+        *                    *  Multimedia            @anyvm                 deny
+        *                    *  @anyvm                Multimedia             deny
         *                    *  fileopen              @anyvm                 deny
         *                    *  @dispvm:debian-X-dvm  @anyvm                 deny
         
   
-  If Any person among readers have a great policy file to share, please share with me.   
+  If Any person among readers have a great policy file to share, please share with me. I want to create a policy file with last line 
+  
+       *    *    @anyvm     @anyvm   ask/deny
+       
+   but VMRootShell is problem.
 
 
 12. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
@@ -347,3 +364,5 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         https://tails.boum.org/doc/about/features/index.en.html
  
         https://0xacab.org/jvoisin/mat2
+        
+        https://www.whonix.org/wiki/Linux_Kernel_Runtime_Guard_LKRG/Qubes
