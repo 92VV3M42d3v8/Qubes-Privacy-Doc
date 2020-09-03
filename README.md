@@ -3,7 +3,7 @@ How to run a private Searx instance in Qubes-OS
 This tutorial is a initial Documentation to run a Private Searx instance in Qubes-OS.
 ( This is work in progress, which performed well in my testings.)
 
-1. Run Terminal in Template Debian-10 and install dependacies here.
+1. Run Terminal in Template Debian-X and install dependacies here.
 
 2. Installing Dependancies-
 
@@ -11,11 +11,11 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
      
        sudo apt-get install git build-essential libxslt-dev python-dev python-virtualenv python-babel zlib1g-dev libffi-dev libssl-dev
      
-3. Create a Qubes AppVM based on Debian-10 and networking through Default(Sys-Firewall). Do not provide Network.
+3. Create a Qubes AppVM based on Debian-X and networking through VPN. Do not provide Network for other appvm via it.
 
 4. Setup installation directory
 
-    Now open termianl in newly created VM, we can move to the directory that we'll install Searx in:
+    Now open terminal in newly created VM, we can move to the directory that we'll install Searx in:
 
        cd /usr/local/
 
@@ -59,10 +59,8 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
    Searx will continue to run until the terminal window is closed. (You'll probably want to get around this and allow it to run indefinitly. This can be done by running the application in the background.
 
-   Press CTRL + C to stop the current instance from running and then enter the command below:)(untested)
-
-       nohup python searx/webapp.py &
-
+   Press CTRL + C to stop the current instance from running.
+   
 9. Now run a browser in same VM and open  http://127.0.0.1:8888
    
 10. Now shut down this App VM.
@@ -73,11 +71,15 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
    
     Delete everything and Paste following-
    
+        #!/bin/bash
+   
         cd /usr/local/searx
    
         . ./venv3/bin/activate
    
         python3 searx/webapp.py
+   
+    Make it executable.
    
 10. Now again open browser and reach http://127.0.0.1:8888
     
@@ -92,4 +94,4 @@ Note:
    
     sudo gedit /usr/local/searx/searx/settings.yml
     
-   Alter settings as you want like altering Secretkey, default-theme etc. save it and exit. 
+   Alter settings as you want like altering Secretkey, default-theme (logicodev dark) etc. save it and exit. 
