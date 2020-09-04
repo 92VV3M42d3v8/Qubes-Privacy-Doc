@@ -26,15 +26,17 @@ During Install configuration, allow Template installation (all 3).(Qubes don't p
 
 My templates= t-mgmt, t-network, t-secure, t-vpn, debian-X, fedora-minimal(with nano), fedora, debian, whonix-gw, whonix-ws. (all offline)
 
-My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online) ( only two are online)
+My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online), BaseVM* ( only two are online)
 
-My Appvm= Vault(offline), Mailvm, storage(offline), GPG(offline), sync, sys-whonix, keybasethunder
+My Appvm= Vault(offline), Mailvm, storage(offline), GPG(offline), sync, sys-whonix, keybasethunder, Bank, Nord, ivpn
 
-My Disp-Appvm= sys-net, sys-firewall(online), sys-usb, fileopen
+My Disp-Appvm= sys-net, sys-firewall(online), sys-usb, fileopen, HardCore, Surf, Multimedia
 
-My AppVM which are templates for DispVM= Bank, HardCore, Surf, Multimedia, Nord, ivpn
+My AppVM which are templates for DispVM= BaseVM
 
 { fileopen is created with (qvm-create -C DispVM -l yellow fileopen) base debian-X-dvm.}
+
+{ BaseVM is appvm based on debian-X in which I modified firefox, installed searx and allowed it to be template for dispvm from advanced tab of settings. Then I made it default dispVM and created all named online disposable vm for different purpose from it and after creating them I changed default dispvm to offline one i.e. debian-X-dvm. Like in above eg. Hardcore is based on BaseVM and it's also created like fileopen.}
 
 Some appvms arise out of requirements too.
 
@@ -54,7 +56,7 @@ B. sys-net creation
     qvm-create -C DispVM -l red sys-net
     qvm-prefs sys-net virt_mode hvm
     qvm-service sys-net meminfo-writer off
-    qvm-pci attach --persistent sys-net2 dom0:00_1a.0
+    qvm-pci attach --persistent sys-net dom0:22_00.0
     qvm-prefs sys-net autostart true
     qvm-prefs sys-net netvm ''
     qvm-features sys-net appmenus-dispvm ''
@@ -65,6 +67,7 @@ B. sys-net creation
   4th step should be done with bdf of ethernet adapter.
   6th and 7th step is "none" not "default none" and prefer via sys-net Qubes settings.
   9th step should be skipped now. 10th step should be set in Qubes Global settings.
+  appmenus-dispvm entry creates an entry in qubes dropdown menu.
 
 
 C. sys-firewall creation
@@ -82,6 +85,7 @@ D. sys-usb Creation
     qvm-prefs sys-usb virt_mode hvm
     qvm-service sys-usb meminfo-writer off
     qvm-pci a sys-usb dom0:03_00.0 --persistent -o no-strict-reset=true
+    qvm-pci a sys-usb dom0:28_00.0 --persistent -o no-strict-reset=true
     qvm-prefs sys-usb autostart true
     qvm-prefs sys-usb netvm ''
     qvm-features sys-usb appmenus-dispvm ''
@@ -169,6 +173,12 @@ fedora-extreme = (I prefer full debian template clone modified instead of fedora
 
     https://prerelease.keybase.io/keybase_amd64.deb 
 
+ I use debian-X for extreme version which include searx, syncthing, keybase, vlc, uget, ublock-origin, https-eveywhere.
+ 
+    sudo apt-get install xul-ext-ublock-origin
+    
+    sudo apt-get install webext-https-everywhere
+
 E. sys-whonix creation
 
     sudo qubesctl state.sls qvm.whonix-ws-dvm
@@ -236,13 +246,15 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
     
     vault, gpg-vm, StorageVM = t-secure
     
-    hardcore = debian
+    hardcore, Multimedia, Surf = BaseVM
     
-    Multimedia, Surf, Sync, keybasethunder = debian-X
+    Sync, keybasethunder = debian-X
     
     VpnVM (proxy) = t-vpn
     
-    fedora-dvm, default-mgmt-dvm, mailvm, Bank = fedora
+    fedora-dvm, mailvm, Bank = fedora
+    
+    default-mgmt-dvm = t-mgmt
     
     B. Networking Structure (not always same, I prefer to change vpn, appvm names, and networking for them)
     
