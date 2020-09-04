@@ -24,7 +24,7 @@ During Install configuration, allow Template installation (all 3).(Qubes don't p
 
 2. After Installation (see 13)
 
-My templates= t-network, t-secure, t-vpn, debian-X, fedora-minimal(with nano), fedora, debian, whonix-gw, whonix-ws. (all offline)
+My templates= t-mgmt, t-network, t-secure, t-vpn, debian-X, fedora-minimal(with nano), fedora, debian, whonix-gw, whonix-ws. (all offline)
 
 My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online) ( only two are online)
 
@@ -103,8 +103,11 @@ Method 2:
 
 If they are to be based on Minimal fedora-
 
-    qvm-run -u root t-network xterm
+    qvm-run -u root t-mgmt xterm
 
+t-mgmt template=
+
+    dnf install qubes-core-agent-passwordless-root qubes-mgmt-salt-vm-connector
 
 t-network template= 
 
