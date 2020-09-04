@@ -28,9 +28,11 @@ My templates= t-network, t-secure, t-vpn, debian-X, fedora-minimal(with nano), f
 
 My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online) ( only two are online)
 
-My Appvm= Vault(offline), Bank, Mailvm, HardCore, Surf, Multimedia, storage(offline), GPG(offline), sync, Nord, ivpn, sys-whonix, keybasethunder
+My Appvm= Vault(offline), Mailvm, storage(offline), GPG(offline), sync, sys-whonix, keybasethunder
 
 My Disp-Appvm= sys-net, sys-firewall(online), sys-usb, fileopen
+
+My AppVM which are templates for DispVM= Bank, HardCore, Surf, Multimedia, Nord, ivpn
 
 { fileopen is created with (qvm-create -C DispVM -l yellow fileopen) base debian-X-dvm.}
 
