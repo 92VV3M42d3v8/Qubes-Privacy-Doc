@@ -26,17 +26,19 @@ During Install configuration, allow Template installation (all 3).(Qubes don't p
 
 My templates= t-mgmt, t-network, t-secure, t-vpn, debian-X, fedora-minimal(with nano), fedora, debian, whonix-gw, whonix-ws. (all offline)
 
-My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online), BaseVM* ( only two are online)
+My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online), sys-pi (standalone servicevm later converted to offline dvm-template), BaseVM* (only two are online)
 
 My Appvm= Vault(offline), Mailvm, storage(offline), GPG(offline), sync, sys-whonix, keybasethunder, Bank, Nord, ivpn
 
-My Disp-Appvm= sys-net, sys-firewall(online), sys-usb, fileopen, HardCore, Surf, Multimedia
+My Disp-Appvm= sys-net, sys-firewall(online), Pi(online), sys-usb, fileopen, HardCore(online), Surf(online), Multimedia (online)
 
 My AppVM which are templates for DispVM= BaseVM
 
 { fileopen is created with (qvm-create -C DispVM -l yellow fileopen) base debian-X-dvm.}
 
 { BaseVM is appvm based on debian-X in which I modified firefox, installed searx and allowed it to be template for dispvm from advanced tab of settings. Then I made it default dispVM and created all named online disposable vm for different purpose from it and after creating them I changed default dispvm to offline one i.e. debian-X-dvm. Like in above eg. Hardcore is based on BaseVM and it's also created like fileopen.}
+
+{ Pi is based on sys-pi similar to fileopen and BaseVM}
 
 Some appvms arise out of requirements too.
 
@@ -173,7 +175,7 @@ fedora-extreme = (I prefer full debian template clone modified instead of fedora
 
     https://prerelease.keybase.io/keybase_amd64.deb 
 
- I use debian-X for extreme version which include searx, syncthing, keybase, vlc, uget, ublock-origin, https-eveywhere.
+ I use debian-X for extreme version which include searx, syncthing, keybase, vlc, uget, ublock-origin, https-eveywhere, libreoffice, gimp.
  
     sudo apt-get install xul-ext-ublock-origin
     
@@ -189,7 +191,7 @@ F. Default mgmt dvm creation
     sudo qubesctl state.sls qvm.default-mgmt-dvm
 
 
-3. MAC alter (not needed is sys-* are disposable.)
+3. MAC alter (not needed is sys-* are disposable, I think.)
 
 Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC address< Random< Save.
 
@@ -224,6 +226,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
 9. How to run AppImage
 
     To be run they first need to be marked executable with chmod +x AppImage , where <AppImage> is the file name of the AppImage, including its file extension) and then run with ./AppImage . Either that or clicked/double-clicked in one's file manager.
+    Some considerable are Session, Telegram, tutanota and some more which I don't want to mention.
 
 
 10. A. Templates for different App and DispVM
@@ -250,6 +253,10 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
     
     Sync, keybasethunder = debian-X
     
+    sys-pi = debian
+    
+    Pi = sys-pi
+    
     VpnVM (proxy) = t-vpn
     
     fedora-dvm, mailvm, Bank = fedora
@@ -260,9 +267,11 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
     
      All templates are offline.
      
-     Among DVM-templates fedora-dvm is via sys-firewall and whonix-dvm via sys-whonix.
+     Among DVM-templates fedora-dvm is via Pi and whonix-dvm via sys-whonix.
      
-     Bank, Nord, ivpn, mailvm via sys-firewall
+     Mailvm, sync, keybasethunder and Bank via Pi or Nord. (use case scenerio)
+     
+     Nord, ivpn via sys-firewall
      
      Rest appvm are either offline or passing via vpn.
      
@@ -272,6 +281,14 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         $ cd /etc/qubes/policy.d/
         sudo nano 30-user.policy
 
+        *                    *  Pi                    @anyvm                 deny
+        *                    *  @anyvm                Pi                     deny
+        *                    *  sys-pi                @anyvm                 deny
+        *                    *  @anyvm                sys-pi                 deny
+        *                    *  @anyvm                Nord                   deny
+        *                    *  Nord                  @anyvm                 deny
+        *                    *  ivpn                  @anyvm                 deny
+        *                    *  @anyvm                ivpn                   deny
         *                    *  @anyvm                Hardcore               deny
         *                    *  Hardcore              @anyvm                 deny
         *                    *  @anyvm                Vault                  deny
@@ -280,6 +297,8 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         qubes.VMShell        *  @anyvm                @anyvm                 deny
         qubes.VMExec         *  @anyvm                @anyvm                 deny
         qubes.VMSExecGUI     *  @anyvm                @anyvm                 deny
+        *                    *  @anyvm                BaseVM                 deny
+        *                    *  BaseVM                @anyvm                 deny
         qubes.ClipboardPaste *  dom0                  @anyvm                 ask
         qubes.ClipboardPaste *  Vault                 @anyvm                 ask
         *                    *  Vault                 @anyvm                 deny
@@ -335,7 +354,9 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
    
         bash-5.0# xdg-settings set default-web-browser browser-dvm.desktop
         
-   Change any pdf or text or jpg default application (from file property) to browser-dvm.desktop    
+   Change any pdf or text or jpg default application (from file property) to browser-dvm.desktop
+   
+   I don't know yet about archives yet.
      
 
 13. Onionized Repositories
@@ -383,3 +404,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         https://0xacab.org/jvoisin/mat2
         
         https://www.whonix.org/wiki/Linux_Kernel_Runtime_Guard_LKRG/Qubes
+        
+        https://github.com/rustybird/qubes-split-browser
+        
+        https://kushaldas.in/posts/using-split-ssh-in-qubesos-4-0.html
