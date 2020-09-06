@@ -26,13 +26,13 @@ During Install configuration, allow Template installation (all 3).(Qubes don't p
 
 My templates= t-mgmt, t-network, t-secure, t-vpn, debian-X, fedora-minimal(with nano), fedora, debian, whonix-gw, whonix-ws. (all offline)
 
-My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online), sys-pi (standalone servicevm later converted to offline dvm-template), BaseVM* (only two are online)
+My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online), sys-pi* (standalone servicevm later converted to offline dvm-template), BaseVM* (only two are online)
 
 My Appvm= Vault(offline), Mailvm, storage(offline), GPG(offline), sync, sys-whonix, keybasethunder, Bank, Nord, ivpn
 
 My Disp-Appvm= sys-net, sys-firewall(online), Pi(online), sys-usb, fileopen, HardCore(online), Surf(online), Multimedia (online)
 
-My AppVM which are templates for DispVM= BaseVM
+My AppVM which are templates for DispVM= BaseVM, sys-pi
 
 { fileopen is created with (qvm-create -C DispVM -l yellow fileopen) base debian-X-dvm.}
 
