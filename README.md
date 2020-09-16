@@ -26,19 +26,19 @@ During Install configuration, allow Template installation (all 3).(Qubes don't p
 
 My templates= t-mgmt, t-network, t-secure, t-vpn, debian-X, fedora-minimal(with nano), fedora, debian, whonix-gw, whonix-ws. (all offline)
 
-My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online), sys-pi* (standalone servicevm later converted to offline dvm-template), BaseVM* (only two are online)
+My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online), BaseVM* (only two are online)
 
-My Appvm= Vault(offline), Mailvm, storage(offline), GPG(offline), sync, sys-whonix, keybasethunder, Bank, Nord, ivpn
+My Appvm= Vault(offline), Mailvm, storage(offline), converter(offline) GPG(offline), sync, sys-whonix, keybasethunder, Bank, Nord, ivpn, sys-pi
 
-My Disp-Appvm= sys-net, sys-firewall(online), Pi(online), sys-usb, fileopen, HardCore(online), Surf(online), Multimedia (online)
+My Disp-Appvm= sys-net, sys-firewall(online), sys-usb, fileopen, HardCore(online), Surf(online), Multimedia (online)
 
-My AppVM which are templates for DispVM= BaseVM, sys-pi
+My AppVM which are templates for DispVM= BaseVM
 
 { fileopen is created with (qvm-create -C DispVM -l yellow fileopen) base debian-X-dvm.}
 
 { BaseVM is appvm based on debian-X in which I modified firefox, installed searx and allowed it to be template for dispvm from advanced tab of settings. Then I made it default dispVM and created all named online disposable vm for different purpose from it and after creating them I changed default dispvm to offline one i.e. debian-X-dvm. Like in above eg. Hardcore is based on BaseVM and it's also created like fileopen.}
 
-{ Pi is based on sys-pi similar to fileopen and BaseVM}
+sys-* and vpnvm are proxyvm except sys-usb.
 
 Some appvms arise out of requirements too.
 
@@ -74,7 +74,7 @@ B. sys-net creation
 
 C. sys-firewall creation
 
-    qvm-create -C DispVM -l red sys-firewall
+    qvm-create -C DispVM -l green sys-firewall
     qvm-prefs sys-firewall autostart true
     qvm-prefs sys-firewall netvm sys-net
     qvm-prefs sys-firewall provides_network true
@@ -115,7 +115,7 @@ t-mgmt template=
 
     dnf install qubes-core-agent-passwordless-root qubes-mgmt-salt-vm-connector
 
-t-network template= 
+t-network template= see 3 also
 
     dnf install psmisc qubes-core-agent-networking iproute qubes-core-agent-network-manager network-manager-applet 
     
@@ -175,11 +175,19 @@ fedora-extreme = (I prefer full debian template clone modified instead of fedora
 
     https://prerelease.keybase.io/keybase_amd64.deb 
 
- I use debian-X for extreme version which include searx, syncthing, keybase, vlc, uget, ublock-origin, https-eveywhere, libreoffice, gimp.
+ I use debian-X for extreme version which include searx, syncthing, keybase, vlc, uget, ublock-origin, https-eveywhere, libreoffice, gimp, mat2, ffmpeg
  
     sudo apt-get install xul-ext-ublock-origin
     
     sudo apt-get install webext-https-everywhere
+    
+    sudo apt-get install webext-nosript
+    
+    sudo apt-get install ffmpeg
+    
+    sudo apt-get install mat2
+    
+    sudo apt install libreoffice
 
 E. sys-whonix creation
 
@@ -191,9 +199,57 @@ F. Default mgmt dvm creation
     sudo qubesctl state.sls qvm.default-mgmt-dvm
 
 
-3. MAC alter (not needed is sys-* are disposable, I think.)
+3. MAC alter
 
-Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC address< Random< Save.
+Randomize all Ethernet and Wifi connections
+
+These steps should be done inside a template to be used to create a 
+NetVM as it relies on creating a config file that would otherwise be 
+deleted after a reboot due to the nature of AppVMs.
+
+
+
+Write the settings to a new file in the /etc/NetworkManager/conf.d/ directory, such as 00-macrandomize.conf.
+The following example enables Wifi and Ethernet MAC address 
+randomization while scanning (not connected), and uses a randomly 
+generated but persistent MAC address for each individual Wifi and 
+Ethernet connection profile.
+
+
+
+[device]
+wifi.scan-rand-mac-address=yes
+
+[connection]
+wifi.cloned-mac-address=stable
+ethernet.cloned-mac-address=stable
+connection.stable-id=${CONNECTION}/${BOOT}
+
+
+
+
+stable in combination with ${CONNECTION}/${BOOT} generates a random address that persists until reboot.
+random generates a random address each time a link goes up.
+
+
+To see all the available configuration options, refer to the man page: man nm-settings
+
+
+
+Next, create a new NetVM using the edited template and assign network devices to it.
+
+
+
+Finally, shutdown all VMs and change the settings of sys-firewall, etc. to use the new NetVM.
+
+
+
+You can check the MAC address currently in use by looking at the 
+status pages of your router device(s), or inside the NetVM with the 
+command sudo ip link show.
+
+https://www.qubes-os.org/doc/anonymizing-your-mac-address/#randomize-your-hostname
+
 
 4. Update dom0
 
@@ -209,13 +265,28 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
 
        $ qvm-block
        
-       $ qvm-block attach work sys-usb:sda
+       $ qvm-block attach work sys-usb:sda1
        
-   This should be visible in "other locations" of work VM. Use it and unmount by right click and unmount option when you are done. 
+   
+   then in dom0
+   
+       $ qvm-block
+   
+   then in work vm
+   
+       $ cd ~
+       
+       mkdir mnt
+       
+       sudo mount /dev/xvdi mnt
+   
+   For unmount
+       
+       sudo umount mnt
    
    Then in dom0
    
-       $ qvm-block detach work sys-usb:sda
+       $ qvm-block detach work sys-usb:sda1
 
 8. Keyfiles for some applications-
 
@@ -255,8 +326,6 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
     
     sys-pi = debian
     
-    Pi = sys-pi
-    
     VpnVM (proxy) = t-vpn
     
     fedora-dvm, mailvm, Bank = fedora
@@ -267,13 +336,13 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
     
      All templates are offline.
      
-     Among DVM-templates fedora-dvm is via Pi and whonix-dvm via sys-whonix.
+     Among DVM-templates fedora-dvm is via sys-Pi and whonix-dvm via sys-whonix.
      
-     Mailvm, sync, keybasethunder and Bank via Pi or Nord. (use case scenerio)
+     Mailvm, sync, keybasethunder and Bank via sys-pi or Nord. (use case scenerio)
      
-     Nord, ivpn via sys-firewall
+     Nord, ivpn via sys-firewall or sys-whonix.
      
-     Rest appvm are either offline or passing via vpn.
+     Rest appvm are either offline or passing via vpn or sys-whonix.
      
 
 11. Sample Qubes Qrexec policy ( WIP- Changes frequently)
@@ -281,8 +350,6 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         $ cd /etc/qubes/policy.d/
         sudo nano 30-user.policy
 
-        *                    *  Pi                    @anyvm                 deny
-        *                    *  @anyvm                Pi                     deny
         *                    *  sys-pi                @anyvm                 deny
         *                    *  @anyvm                sys-pi                 deny
         *                    *  @anyvm                Nord                   deny
@@ -302,14 +369,18 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         qubes.ClipboardPaste *  dom0                  @anyvm                 ask
         qubes.ClipboardPaste *  Vault                 @anyvm                 ask
         *                    *  Vault                 @anyvm                 deny
-        qubes.ClipboardPaste *  @anyvm                Storage                ask
         qubes.ClipboardPaste *  @anyvm                @anyvm                 deny
         qubes.UpdatesProxy   *  @type:TemplateVM      @default               allow target=sys-whonix
-        qubes.Filecopy       *  @anyvm                Storage                ask
+        qubes.Filecopy       *  storage               @anyvm                 deny
+        qubes.GetImageRGBA   *  converter             @dispvm                allow
+        qubes.Filecopy       *  @anyvm                converter              ask
         qubes.Filecopy       *  @anyvm                @default               ask
+        qubes.Filecopy       *  converter             storage                ask  
         qubes.Filecopy       *  @anyvm                @anyvm                 deny
         qubes.OpenInVM       *  Storage               fileopen               allow
         qubes.OpenInVM       *  @anyvm                @anyvm                 deny
+        qubes.PdfConvert     *  converter             @dispvm                ask
+        qubes.PdfConvert     *  converter             fileopen               allow
         *                    *  @anyvm                Storage                deny
         *                    *  Storage               @anyvm                 deny
         *                    *  Surf                  @anyvm                 deny
@@ -318,6 +389,8 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         *                    *  @anyvm                sync                   deny
         *                    *  Multimedia            @anyvm                 deny
         *                    *  @anyvm                Multimedia             deny
+        *                    *  sync                  @anyvm                 deny
+        *                    *  @anyvm                sync                   deny
         *                    *  fileopen              @anyvm                 deny
         *                    *  @dispvm:debian-X-dvm  @anyvm                 deny
         
@@ -346,7 +419,7 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
         X-MultipleArgs=false
         Type=Application
         Categories=Network;WebBrowser;
-        MimeType=x-scheme-handler/unknown;x-scheme-handler/about;text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;application/pdf;text/plain
+        MimeType=x-scheme-handler/unknown;x-scheme-handler/about;text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;application/pdf;text/plain;application/x-rar-compressed;application/octet-stream;application/zip; application/octet-stream;application/x-zip-compressed;multipart/x-zip;application/msword;application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/vnd.openxmlformats-officedocument.wordprocessingml.template;application/vnd.ms-word.document.macroEnabled.12;application/vnd.ms-word.template.macroEnabled.12;application/vnd.ms-excel;application/vnd.ms-excel;application/vnd.ms-excel;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;application/vnd.openxmlformats-officedocument.spreadsheetml.template;application/vnd.ms-excel.sheet.macroEnabled.12;application/vnd.ms-excel.template.macroEnabled.12;application/vnd.ms-excel.addin.macroEnabled.12;application/vnd.ms-excel.sheet.binary.macroEnabled.12;application/vnd.ms-powerpoint;application/vnd.ms-powerpoint;application/vnd.ms-powerpoint;application/vnd.ms-powerpoint;application/vnd.openxmlformats-officedocument.presentationml.presentation;application/vnd.openxmlformats-officedocument.presentationml.template;application/vnd.openxmlformats-officedocument.presentationml.slideshow;application/vnd.ms-powerpoint.addin.macroEnabled.12;application/vnd.ms-powerpoint.presentation.macroEnabled.12;application/vnd.ms-powerpoint.template.macroEnabled.12;application/vnd.ms-powerpoint.slideshow.macroEnabled.12;application/vnd.ms-access
         
    Save with ctrl+x then y then enter.
    
@@ -354,10 +427,9 @@ Network Manager < Edit connections...< Wired connection 1< settings < Cloned MAC
    
         bash-5.0# xdg-settings set default-web-browser browser-dvm.desktop
         
-   Change any pdf or text or jpg default application (from file property) to browser-dvm.desktop
+   Change any pdf, office files, text, archives or jpg default application (from file property) to browser-dvm.desktop
    
-   I don't know yet about archives yet.
-     
+   
 
 13. Onionized Repositories
 
