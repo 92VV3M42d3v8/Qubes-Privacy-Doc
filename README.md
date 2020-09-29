@@ -11,7 +11,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
      
        sudo apt-get install git build-essential libxslt-dev python-dev python-virtualenv python-babel zlib1g-dev libffi-dev libssl-dev
      
-3. Create a Qubes AppVM based on Debian-X and networking through VPN. Do not provide Network for other appvm via it.
+3. Create a Qubes AppVM based on Debian-X and networking through VPN. Do not provide Network for other appvm via it. Following commands if run in minimal ones don't need sudo. Just remember to start AppVM terminal from dom0 with root access.
 
 4. Setup installation directory
 
@@ -62,10 +62,8 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
    Press CTRL + C to stop the current instance from running.
    
 9. Now run a browser in same VM and open  http://127.0.0.1:8888
-   
-10. Now shut down this App VM.
 
-11. Now again start the App VM terminal and run following command
+10. Now run following command
 
         sudo gedit /rw/config/rc.local
    
@@ -81,7 +79,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
    
     Make it executable.
    
-10. Now again open browser and reach http://127.0.0.1:8888
+10. Restart and reach http://127.0.0.1:8888
     
     Hooray our own private Searx instance running.
      
