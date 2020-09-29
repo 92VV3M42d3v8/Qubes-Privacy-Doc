@@ -18,7 +18,13 @@ Syncthing in Qubes-OS
 5. Add the "stable" channel to your APT sources:
 
        echo "deb https://apt.syncthing.net/ syncthing stable" | sudo tee /etc/apt/sources.list.d/syncthing.list
-       
+  
+  You can do the same with following also-
+  
+      sudo nano /etc/apt/sources.list.d/syncthing.list
+      
+      deb https://apt.syncthing.net/ syncthing stable
+      
 
 6. Update and install syncthing:
 
