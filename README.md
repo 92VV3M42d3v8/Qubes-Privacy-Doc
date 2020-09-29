@@ -61,7 +61,7 @@ Now again in App VM terminal
 
     sudo gedit /rw/config/vpn/qubes-vpn-handler.sh
 
-Add following text-
+Add following text (size-1093 bytes)
 
     #!/bin/bash
     set -e
@@ -126,7 +126,7 @@ Now again in terminal run
 
     sudo gedit /rw/config/qubes-firewall-user-script
 
-Delete everything and Add following-
+Delete everything and Add following (size- 718 bytes)-
 
     #!/bin/bash
     #    Block forwarding of connections through upstream network device
@@ -163,7 +163,7 @@ In Terminal
 
     sudo gedit /rw/config/rc.local
 
-Delete everything and add
+Delete everything and add (size- 259 bytes)
 
     #!/bin/bash
     VPN_CLIENT='openvpn'
