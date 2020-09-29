@@ -126,7 +126,7 @@ Now again in terminal run
 
     sudo gedit /rw/config/qubes-firewall-user-script
 
-Delete everything and Add following (size- 718 bytes)-
+Delete everything and Add following (size- 719 bytes)-
 
     #!/bin/bash
     #    Block forwarding of connections through upstream network device
