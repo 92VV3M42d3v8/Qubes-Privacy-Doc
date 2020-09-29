@@ -100,11 +100,9 @@ Add following text-
     esac
 
 
-Add these two lines just beneath first line
+Add this line just beneath first line
 
     vpn_dns="X.X.X.X"
-
-    addr="X.X.X.X"
 
 Replace X.X.X.X with following addresses written in front of VPN name in these two lines-
 
@@ -205,5 +203,7 @@ Restart your VPN VM.
 Note: Sometimes it may be needed later to convert rule no. 0 to allow another IP address then remove that rule and add by following-
 
     qvm-firewall VPNVM add --before [last_drop_rule_#] action=accept dst4=y.y.y.y proto=tcp dstports=443
+
+Some good sites for VPN in Qubes - Qubes-doc, Mullvad support, Whonix-VPN combo and Tasket VPN support
 
 Disclaimer: In my opinion no harm is done to any party. If anyone feel offended by any mean put a comment, I will be happy to help.
