@@ -107,7 +107,7 @@ Set some settings in global settings as you like.
 
 Method 2:
 
-If they are to be based on Minimal fedora-
+If they are to be based on Minimal fedora or debian-
 
     qvm-run -u root t-mgmt xterm
 
@@ -117,12 +117,12 @@ t-mgmt template=
 
 t-network template= see 3 also
 
-    dnf install psmisc qubes-core-agent-networking iproute qubes-core-agent-network-manager network-manager-applet 
+    dnf install qubes-core-agent-networking iproute qubes-core-agent-network-manager 
     
 
 t-secure template= (see 12 below first)
 
-    dnf install psmisc gnome-keyring qubes-core-agent-nautilus qubes-usb-proxy qubes-input-proxy-sender qubes-gpg-split oathtool keepassxc qubes-core-agent-passwordless-root polkit pycairo
+    dnf install qubes-core-agent-nautilus qubes-usb-proxy qubes-input-proxy-sender qubes-gpg-split oathtool keepassxc
     
   
 t-secure template Volume size should be increased to 40-50 GB.  
@@ -137,19 +137,19 @@ You have to create t-network-dvm and t-secure-dvm and then have to follow method
 
 t-vpn template=
 
-    dnf install psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus gedit openvpn iptables qubes-core-agent-networking
+    dnf install notification-daemon gedit openvpn qubes-core-agent-networking
 
 
-fedora-mega = (I prefer fedora-32)
+fedora-mega = 
 
-    dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo pulseaudio-qubes
+    dnf install qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit pulseaudio-qubes uget syncthing searx-dependacies
 
 
-fedora-extreme = (I prefer full debian template clone modified instead of fedora-extreme)
+fedora-extreme = 
 
-    dnf install pciutils less psmisc notification-daemon gnome-keyring qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo gimp pulseaudio-qubes uget
+    dnf install qubes-core-agent-nautilus qubes-core-agent-networking firefox gedit qubes-core-agent-passwordless-root polkit qubes-pdf-converter qubes-img-converter pycairo gimp pulseaudio-qubes gnome-keyring libreoffice mat2 ffmpeg vlc gimp 
     
-   Also intall vlc, searx, syncthing, keybase, uget in it. 
+    (networking components are not necessary) 
    
  Vlc-
  
@@ -218,9 +218,11 @@ Ethernet connection profile.
 
 
 [device]
+
 wifi.scan-rand-mac-address=yes
 
 [connection]
+
 wifi.cloned-mac-address=stable
 ethernet.cloned-mac-address=stable
 connection.stable-id=${CONNECTION}/${BOOT}
@@ -343,63 +345,6 @@ https://www.qubes-os.org/doc/anonymizing-your-mac-address/#randomize-your-hostna
      Nord, ivpn via sys-firewall or sys-whonix.
      
      Rest appvm are either offline or passing via vpn or sys-whonix.
-     
-
-11. Sample Qubes Qrexec policy ( WIP- Changes frequently)
-
-        $ cd /etc/qubes/policy.d/
-        sudo nano 30-user.policy
-
-        *                    *  sys-pi                @anyvm                 deny
-        *                    *  @anyvm                sys-pi                 deny
-        *                    *  @anyvm                Nord                   deny
-        *                    *  Nord                  @anyvm                 deny
-        *                    *  ivpn                  @anyvm                 deny
-        *                    *  @anyvm                ivpn                   deny
-        *                    *  @anyvm                Hardcore               deny
-        *                    *  Hardcore              @anyvm                 deny
-        *                    *  @anyvm                Vault                  deny
-        *                    *  @anyvm                Bank                   deny
-        *                    *  Bank                  @anyvm                 deny
-        qubes.VMShell        *  @anyvm                @anyvm                 deny
-        qubes.VMExec         *  @anyvm                @anyvm                 deny
-        qubes.VMSExecGUI     *  @anyvm                @anyvm                 deny
-        *                    *  @anyvm                BaseVM                 deny
-        *                    *  BaseVM                @anyvm                 deny
-        qubes.ClipboardPaste *  dom0                  @anyvm                 ask
-        qubes.ClipboardPaste *  Vault                 @anyvm                 ask
-        *                    *  Vault                 @anyvm                 deny
-        qubes.ClipboardPaste *  @anyvm                @anyvm                 deny
-        qubes.UpdatesProxy   *  @type:TemplateVM      @default               allow target=sys-whonix
-        qubes.Filecopy       *  storage               @anyvm                 deny
-        qubes.GetImageRGBA   *  converter             @dispvm                allow
-        qubes.Filecopy       *  @anyvm                converter              ask
-        qubes.Filecopy       *  @anyvm                @default               ask
-        qubes.Filecopy       *  converter             storage                ask  
-        qubes.Filecopy       *  @anyvm                @anyvm                 deny
-        qubes.OpenInVM       *  Storage               fileopen               allow
-        qubes.OpenInVM       *  @anyvm                @anyvm                 deny
-        qubes.PdfConvert     *  converter             @dispvm                ask
-        qubes.PdfConvert     *  converter             fileopen               allow
-        *                    *  @anyvm                Storage                deny
-        *                    *  Storage               @anyvm                 deny
-        *                    *  Surf                  @anyvm                 deny
-        *                    *  @anyvm                Surf                   deny
-        *                    *  sync                  @anyvm                 deny
-        *                    *  @anyvm                sync                   deny
-        *                    *  Multimedia            @anyvm                 deny
-        *                    *  @anyvm                Multimedia             deny
-        *                    *  sync                  @anyvm                 deny
-        *                    *  @anyvm                sync                   deny
-        *                    *  fileopen              @anyvm                 deny
-        *                    *  @dispvm:debian-X-dvm  @anyvm                 deny
-        
-  
-  If Any person among readers have a great policy file to share, please share with me. I want to create a policy file with last line 
-  
-       *    *    @anyvm     @anyvm   ask/deny
-       
-   but VMRootShell is problem.
 
 
 12. How to open every(many file types) file from a VM like Storage VM to dispVM by default:
