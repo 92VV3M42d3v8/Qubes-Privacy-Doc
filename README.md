@@ -92,4 +92,6 @@ Note:
    
     sudo gedit /usr/local/searx/searx/settings.yml
     
-   Alter settings as you want like altering Secretkey, default-theme (logicodev dark) etc. save it and exit. 
+   Alter settings as you want like altering Secretkey, default-theme (logicodev-dark), instance name, outgoing request timeout (5,10), enabled plugins like HTTPS rewrite, Tracker URL remover etc. save it and exit. 
+   
+   
