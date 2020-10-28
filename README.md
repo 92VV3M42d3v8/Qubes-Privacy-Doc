@@ -163,7 +163,7 @@ In Terminal
 
     sudo gedit /rw/config/rc.local
 
-Delete everything and add (size- 259 bytes)
+Delete everything and add (size- 261 bytes)
 
     #!/bin/bash
     VPN_CLIENT='openvpn'
