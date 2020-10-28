@@ -1,4 +1,4 @@
-A little Advanced Configuration for Qubes-OS use. (Might be buggy if you have WiFi connectivity and specific rules set on sys-firewall)( I have just recently switched from Windows to directly Qubes, with no knowledge of linux)
+A little Advanced Configuration for Qubes-OS use. (Might be buggy if you have WiFi connectivity and specific rules set on sys-firewall)( I have just recently switched from Windows to directly Qubes, with no knowledge of linux)( I am not using Qubes in this way currently and I will update this in few days.)
 
 1. Creating Media for Qubes-OS
 
