@@ -88,7 +88,7 @@ Add following text (size-1093 bytes)
             iptables -t nat -A PR-QBS -i vif+ -p udp --dport 53 -j DNAT --to $addr
             iptables -t nat -A PR-QBS -i vif+ -p tcp --dport 53 -j DNAT --to $addr
         done
-        su - -c 'notify-send "$(hostname): LINK IS UP." --icon=network-idle' user
+        su - -c 'notify-send "$(hostname): Connected." --icon=network-idle' user
     else
         su - -c 'notify-send "$(hostname): LINK UP, NO DNS!" --icon=dialog-error' user
     fi
@@ -169,7 +169,7 @@ Delete everything and add (size- 259 bytes)
     VPN_CLIENT='openvpn'
     VPN_OPTIONS='--cd /rw/config/vpn/ --config openvpn-client.ovpn --daemon'
    
-    su - -c 'notify-send "$(hostname): Starting $VPN_CLIENT..." --icon=network-idle' user
+    su - -c 'notify-send "$(hostname): Connecting $VPN_CLIENT..." --icon=network-idle' user
     groupadd -rf qvpn ; sleep 2s
     sg qvpn -c "$VPN_CLIENT $VPN_OPTIONS"
 
