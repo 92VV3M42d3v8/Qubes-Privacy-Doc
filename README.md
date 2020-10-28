@@ -28,7 +28,7 @@ My templates= t-mgmt, t-network, t-secure, t-vpn, debian-X, fedora-minimal(with 
 
 My DVM-templates= default-mgmt-dvm, debian-X-dvm(default), fedora-dvm (online), t-network-dvm, t-secure-dvm, whonix-ws-dvm (online), BaseVM* (only two are online)
 
-My Appvm= Vault(offline), Mailvm, storage(offline), converter(offline) GPG(offline), sync, sys-whonix, keybasethunder, Bank, Nord, ivpn, sys-pi
+My Appvm= Vault(offline), Mailvm, storage(offline), converter(offline) GPG(offline), sync, sys-whonix, keybasethunder, Bank, Nord, sys-pi
 
 My Disp-Appvm= sys-net, sys-firewall(online), sys-usb, fileopen, HardCore(online), Surf(online), Multimedia (online)
 
@@ -58,7 +58,7 @@ B. sys-net creation
     qvm-create -C DispVM -l red sys-net
     qvm-prefs sys-net virt_mode hvm
     qvm-service sys-net meminfo-writer off
-    qvm-pci attach --persistent sys-net dom0:22_00.0
+    qvm-pci attach --persistent sys-net dom0:18_00.0
     qvm-prefs sys-net autostart true
     qvm-prefs sys-net netvm ''
     qvm-features sys-net appmenus-dispvm ''
@@ -86,8 +86,8 @@ D. sys-usb Creation
     qvm-create -C DispVM -l red sys-usb
     qvm-prefs sys-usb virt_mode hvm
     qvm-service sys-usb meminfo-writer off
-    qvm-pci a sys-usb dom0:03_00.0 --persistent -o no-strict-reset=true
-    qvm-pci a sys-usb dom0:28_00.0 --persistent -o no-strict-reset=true
+    qvm-pci a sys-usb dom0:07_00.0 --persistent -o no-strict-reset=true
+    qvm-pci a sys-usb dom0:25_00.0 --persistent -o no-strict-reset=true
     qvm-prefs sys-usb autostart true
     qvm-prefs sys-usb netvm ''
     qvm-features sys-usb appmenus-dispvm ''
@@ -344,7 +344,7 @@ https://www.qubes-os.org/doc/anonymizing-your-mac-address/#randomize-your-hostna
      
      Mailvm, sync, keybasethunder and Bank via sys-pi or Nord. (use case scenerio)
      
-     Nord, ivpn via sys-firewall or sys-whonix.
+     Nord via sys-firewall or sys-whonix.
      
      Rest appvm are either offline or passing via vpn or sys-whonix.
 
@@ -370,9 +370,9 @@ https://www.qubes-os.org/doc/anonymizing-your-mac-address/#randomize-your-hostna
         
    Save with ctrl+x then y then enter.
    
-   Set it as your default browser-
+   Set it as your default browser in user xterm (not as root)-
    
-        bash-5.0# xdg-settings set default-web-browser browser-dvm.desktop
+         xdg-settings set default-web-browser browser-dvm.desktop
         
    Change any pdf, office files, text, archives or jpg default application (from file property) to browser-dvm.desktop
    
@@ -381,7 +381,7 @@ https://www.qubes-os.org/doc/anonymizing-your-mac-address/#randomize-your-hostna
 13. Onionized Repositories
 
         https://www.whonix.org/wiki/Onionizing_Repositories
-        https://www.qubes-os.org/news/2019/04/17/tor-onion-services-available-again/
+        
         
 14. Split-GPG 
 
