@@ -39,7 +39,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
 
        cd searx/
 
-   Next, we'll switch to our newly created user:
+   Next, we'll switch to our newly created user (sudo needed):
 
        sudo -u searx -i
 
