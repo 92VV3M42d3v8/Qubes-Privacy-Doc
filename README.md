@@ -1,9 +1,7 @@
 How to run a private Searx instance in Qubes-OS
 
-This tutorial is a initial Documentation to run a Private Searx instance in Qubes-OS.
-( This is work in progress, which performed well in my testings.)( Recently tested on debian-11-minimal with some issues)
 
-1. Run Terminal in Template Debian-11-minimal and install Packages here.
+1. Run Terminal in Template Debian-11-minimal clone and install Packages here.
 
 2. Installing Packages-
 
@@ -56,6 +54,7 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
        
    Add following-
    
+       #!/bin/bash
        sudo -H useradd --shell /bin/bash --system --home-dir "/usr/local/searx" searx
        sudo -H -u searx -i bash -c 'cd /usr/local/searx/searx-src && python3 searx/webapp.py'
        
