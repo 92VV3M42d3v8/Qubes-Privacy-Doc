@@ -49,51 +49,23 @@ This tutorial is a initial Documentation to run a Private Searx instance in Qube
         
    Alter ultrasecretkey at least.
         
-        
-8. Final touch before running instance
+    
+8. Change rc.local file-
 
-       $ sudo -H -u searx -i
-       (searx)$ cd /usr/local/searx/searx-src
-       (searx)$ export SEARX_SETTINGS_PATH="/usr/local/searx/searx-src/searx/settings.yml"
+       $ sudo nano /rw/config/rc.local
        
-
-9. Launch Searx
-
-   Now we can launch the main Searx program with Python:
-
-       (searx)$ python searx/webapp.py
-
-   Searx will continue to run until the terminal window is closed. (You'll probably want to get around this and allow it to run indefinitly. This can be done by running the application in the background.
-
-   Press CTRL + C to stop the current instance from running.
+   Add following-
    
-9. Now run a browser in same VM and open  http://127.0.0.1:8888
-
-10. Now run following command( This is obsolete at the momemt) (rc.local part is not working in debian-11, I will test further later but there is a workaround for now. See 11) Tried part is following which is not working yet, don't know reason.
-
-        sudo gedit /rw/config/rc.local
+       sudo -H useradd --shell /bin/bash --system --home-dir "/usr/local/searx" searx
+       sudo -H -u searx -i bash -c 'cd /usr/local/searx/searx-src && python3 searx/webapp.py'
+       
+   Convert into executable
    
-    Delete everything and Paste following-
+        $ sudo chmod +x /rw/config/rc.local
    
-        #!/bin/bash
-   
-        sudo -H useradd --shell /bin/bash --system --home-dir "/usr/local/searx" searx
-        sudo -H -u searx -i
-        (searx)$ cd /usr/local/searx/searx-src
-        (searx)$ python searx/webapp.py
-
-    Make it executable.
-    
-    
-11. Restart VM 
-    open sudo terminal and run following in order-
-          
-        sudo -H useradd --shell /bin/bash --system --home-dir "/usr/local/searx" searx
-        sudo -H -u searx -i
-        (searx)$ cd /usr/local/searx/searx-src
-        (searx)$ python searx/webapp.py
+   Restart VM.
          
-12. reach http://127.0.0.1:8888
+9. reach http://127.0.0.1:8888
     
     Hooray our own private Searx instance running.
      
