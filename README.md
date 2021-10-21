@@ -1,4 +1,4 @@
-A little Advanced Configuration for Qubes-OS use. (Might be buggy if you have WiFi connectivity and specific rules set on sys-firewall)( I have just recently switched from Windows to directly Qubes, with no knowledge of linux)( I am not using Qubes in this way currently and I will update this in few days.)
+A little Advanced Configuration for Qubes-OS use. (Might be buggy if you have WiFi connectivity and specific rules set on sys-firewall)( I have just recently switched from Windows to directly Qubes, with no knowledge of linux)( I am not using Qubes in this way currently and I will update this in few days.) AFAIK QMSK is 427F11FD0FAA4B080123F01CDDFA1A3E36879494
 
 1. Creating Media for Qubes-OS
 
