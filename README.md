@@ -427,3 +427,7 @@ https://www.qubes-os.org/doc/anonymizing-your-mac-address/#randomize-your-hostna
         https://github.com/rustybird/qubes-split-browser
         
         https://kushaldas.in/posts/using-split-ssh-in-qubesos-4-0.html
+        
+        https://anonymousplanet.org/guide.html
+
+        https://github.com/unman/notes
